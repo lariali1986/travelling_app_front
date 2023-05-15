@@ -1,0 +1,106 @@
+[
+  {
+    "destinationCity": "Paris",
+    "destinationCountry": "France",
+    "numberOfDays": 5,
+    "numberOfNights": 4,
+    "hotelName": "Eiffel Tower",
+    "price": 1200
+  },
+  {
+    "destinationCity": "New York",
+    "destinationCountry": "USA",
+    "numberOfDays": 7,
+    "numberOfNights": 6,
+    "hotelName": "Marriott Marquis",
+    "price": 2500
+  },
+  {
+    "destinationCity": "Tokyo",
+    "destinationCountry": "Japan",
+    "numberOfDays": 10,
+    "numberOfNights": 9,
+    "hotelName": "Hilton Tokyo",
+    "price": 3500
+  },
+  {
+    "destinationCity": "Dubai",
+    "destinationCountry": "UAE",
+    "numberOfDays": 6,
+    "numberOfNights": 5,
+    "hotelName": "Burj Al Arab",
+    "price": 1800
+  },
+  {
+    "destinationCity": "Cancun",
+    "destinationCountry": "Mexico",
+    "numberOfDays": 8,
+    "numberOfNights": 7,
+    "hotelName": "Ritz-Carlton Cancun",
+    "price": 3000
+  },
+  {
+    "destinationCity": "Sydney",
+    "destinationCountry": "Australia",
+    "numberOfDays": 14,
+    "numberOfNights": 13,
+    "hotelName": "Shangri-La Sydney",
+    "price": 4200
+  },
+  {
+    "destinationCity": "Rio de Janeiro",
+    "destinationCountry": "Brazil",
+    "numberOfDays": 9,
+    "numberOfNights": 8,
+    "hotelName": "Belmond Copacabana Palace",
+    "price": 2800
+  },
+  {
+    "destinationCity": "Barcelona",
+    "destinationCountry": "Spain",
+    "numberOfDays": 6,
+    "numberOfNights": 5,
+    "hotelName": "Hotel Arts Barcelona",
+    "price": 2100
+  },
+  {
+    "destinationCity": "Cape Town",
+    "destinationCountry": "South Africa",
+    "numberOfDays": 12,
+    "numberOfNights": 11,
+    "hotelName": "One&Only Cape Town",
+    "price": 3900
+  },
+  {
+    "destinationCity": "Singapore",
+    "destinationCountry": "Singapore",
+    "numberOfDays": 4,
+    "numberOfNights": 3,
+    "hotelName": "Marina Bay Sands",
+    "price": 1000
+  },
+  {
+    "destinationCity": "Marrakech",
+    "destinationCountry": "Morocco",
+    "numberOfDays": 8,
+    "numberOfNights": 7,
+    "hotelName": "Royal Mansour Marrakech",
+    "price": 3200
+  },
+  {
+    "destinationCity": "Bali",
+    "destinationCountry": "Indonesia",
+    "numberOfDays": 10,
+    "numberOfNights": 9,
+    "hotelName": "The St. Regis Bali Resort",
+    "price": 3700
+  },
+  {
+    "destinationCity": "Venice",
+    "destinationCountry": "Italy",
+    "numberOfDays": 3,
+    "numberOfNights": 2,
+    "hotelName": "Belmond Hotel Cip",
+    "price": 3700
+  }
+]
