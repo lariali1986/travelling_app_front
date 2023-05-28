@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import PackageCard from './packageCard';
+import PackageCard from './PackageCard';
 import { useNavigation } from '@react-navigation/native';
 
 export default function PackageCardGroup({ data }) {
@@ -12,7 +12,7 @@ export default function PackageCardGroup({ data }) {
     <FlatList
       data={data}
       keyExtractor={(item) => item.id}
-      numColumns={2}
+      numColumns={1}
       renderItem={({ item }) => (
         <PackageCard
           item={item}
