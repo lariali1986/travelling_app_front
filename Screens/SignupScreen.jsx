@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
+import { AsyncStorage } from 'react-native';
 
 import {
   View,
@@ -19,25 +20,24 @@ class Customer {
   constructor() {
     this.name = '';
     this.username = '';
-    this.email= '';
+    this.email = '';
     this.password = '';
   }
   setCustomerName(name) {
-    this.name=name;
+    this.name = name;
   }
   setCustomerUsername(username) {
-    this.username=username;
+    this.username = username;
   }
   setCustomerEmail(email) {
-    this.email=email;
+    this.email = email;
   }
   setCustomerPassword(password) {
-    this.password=password;
+    this.password = password;
   }
 }
 
 const SignUpScreen = () => {
-
   const { storedInfo, setFcn } = useContext(AppContent);
   const navigation = useNavigation();
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -47,33 +47,40 @@ const SignUpScreen = () => {
   const handleNameChange = (name) => {
     newCustomer.setCustomerName(name);
     setCustomer(newCustomer);
+    console.log(JSON.stringify(customer));
   };
 
   const handleUsernameChange = (username) => {
     newCustomer.setCustomerUsername(username);
     setCustomer(newCustomer);
+    console.log(JSON.stringify(customer));
   };
 
   const handleEmailChange = (email) => {
     newCustomer.setCustomerEmail(email);
     setCustomer(newCustomer);
+    console.log(JSON.stringify(customer));
   };
 
   const handlePasswordChange = (password) => {
     newCustomer.setCustomerPassword(password);
     setCustomer(newCustomer);
-  }
-  
+    console.log(JSON.stringify(customer));
+  };
 
   async function handleSignUp() {
     try {
-      const response = await signup(customer.name, customer.username, customer.email, customer.password);
+      const response = await signup(
+        customer.name,
+        customer.username,
+        customer.email,
+        customer.password
+      );
       if (response.status == 200) {
-       
         let jwtResponse = await response.json();
-        setFcn.setAuthToken(jwtResponse.api_token);
-        setFcn.setTravelPackages(jwtResponse.packages)
-        navigation.navigate('Home', {showHome: true});
+        setFcn.setAuthToken(jwtResponse.api_token, jwtResponse.userName);
+        setFcn.setTravelPackages(jwtResponse.packages);
+        navigation.navigate('Home', { showHome: true });
       }
       if (response.status != 200) {
         alert(response.stauts);
@@ -92,30 +99,30 @@ const SignUpScreen = () => {
       <Image source={require('../assets/logo.png')} style={styles.logo} />
       <TextInput
         style={styles.input}
-        placeholder="Name"
+        placeholder='Name'
         onChangeText={handleNameChange}
       />
       <TextInput
         style={styles.input}
-        placeholder="userName"
+        placeholder='userName'
         onChangeText={handleUsernameChange}
       />
       <TextInput
         style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
+        placeholder='Email'
+        keyboardType='email-address'
         onChangeText={handleEmailChange}
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder='Password'
         secureTextEntry
         onChangeText={handlePasswordChange}
       />
 
       <TextInput
         style={styles.input}
-        placeholder="confirmPassword"
+        placeholder='confirmPassword'
         secureTextEntry
         onChangeText={setConfirmPassword}
       />
