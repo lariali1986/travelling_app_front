@@ -86,12 +86,12 @@ const styles = {
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 2,
-    color: 'black',
+    color: 'white',
   },
   textNotBold: {
     fontSize: 10,
     marginBottom: 4,
-    color: 'black'
+    color: 'white'
   },
   button: {
     backgroundColor: '#007AFF',

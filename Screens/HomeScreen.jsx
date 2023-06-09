@@ -121,7 +121,6 @@ const HomeScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-     
         <View style={styles.signOutWelcomeContainer}>
           {storedInfo.isAuthenticated && (
             <TouchableOpacity
@@ -225,7 +224,7 @@ const HomeScreen = ({ route }) => {
 
           <View style={styles.container}>
             {btn === 'Home' && (
-              <Text style={[styles.headingText, {color:'black', textShadowColor: 'black'}]}>Available Packages</Text>
+              <Text style={[styles.headingText, {color:'yellow', textShadowColor: 'black'}]}>Available Packages</Text>
             )}
             {btn === 'Home' && <View style={[styles.line, , {marginBottom: 1}]} />}
             {btn === 'Home' && (
@@ -235,7 +234,6 @@ const HomeScreen = ({ route }) => {
             {btn === 'Login' && <LoginScreen />}
           </View>
         </View>
-      
     </View>
   );
 };
@@ -243,7 +241,7 @@ const HomeScreen = ({ route }) => {
 const styles = {
   containerHome: {
     flex: 1,
-    backgroundColor:'lightyellow'
+    backgroundColor:'black',
   },
   container: {
     flex: 1,
@@ -273,8 +271,8 @@ const styles = {
   input: {
     height: 28,
     width: '35%',
-    borderColor: 'black',
-    color: 'black',
+    borderColor: 'white',
+    color: 'white',
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 8,
@@ -301,7 +299,7 @@ const styles = {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: 'black',
+    backgroundColor: 'yellow',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 6,
@@ -319,7 +317,7 @@ const styles = {
     paddingHorizontal: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'black',
+    color: 'yellow',
   },
   logo: {
     width: '15%',
@@ -339,7 +337,7 @@ const styles = {
     opacity: 1,
     fontSize: 14,
     fontWeight: 'bold',
-    color: 'black',
+    color: 'yellow',
   },
   item: {
     paddingTop: 20,
@@ -359,7 +357,7 @@ const styles = {
     fontSize: 10,
   },
   welcomeText: {
-    color: 'blue',
+    color: 'white',
     fontSize: 14,
     fontWeight: 'bold',
   },
