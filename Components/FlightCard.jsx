@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -33,16 +35,16 @@ export default function FlightCard({ item, active}) {
     <TouchableOpacity style={btnTxt==='Book'? styles.cardUnSelected:styles.cardSelected}>
       <View style={styles.textContainer}>
         <Text style={styles.textBold}>
-           {item.flightNumber}
+           {'Flight Number: '+item.flightNumber}
         </Text>
         <Text style={styles.textBold}>
-          {item.departureCity + ' / ' + item.arrivalCity }
+          {'from '+item.departureCity + ' to ' + item.arrivalCity }
         </Text>
         <Text style={styles.textBold}>
           {'Departure Time: '+item.departureTime}
         </Text>
         <Text style={styles.textBold}>
-          {item.flightPrice}
+          {'Price: '+item.flightPrice}
         </Text>
         <TouchableOpacity style={styles.button} onPress={pressHandler}>
           <Text style={styles.buttonText}>{btnTxt}</Text>
@@ -54,13 +56,41 @@ export default function FlightCard({ item, active}) {
 const styles = {
   cardSelected: {
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: 'lightgreen',
     flexDirection: 'row',
+    borderRadius: 16,
+    margin: 8,
+    width: '100%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
   },
     cardUnSelected: {
       flex: 1,
       backgroundColor: 'white',
       flexDirection: 'row',
+      borderRadius: 16,
+      margin: 8,
+      width: '100%',
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  image: {
+    width: '40%',
+    height: 120,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    resizeMode: 'cover',
   },
   textContainer: {
     padding: 6,
@@ -88,3 +118,4 @@ const styles = {
     fontSize: 8,
   },
 };
+

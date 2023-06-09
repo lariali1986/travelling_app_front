@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -75,15 +76,35 @@ const styles = {
       width: '100%',
       alignItems: 'center',
       shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-
+  image: {
+    width: '40%',
+    height: 120,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    resizeMode: 'cover',
+  },
   textContainer: {
     padding: 6,
     alignItems: 'center',
     width: '60%',
   },
- 
-
+  textBold: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 2,
+  },
+  textNotBold: {
+    fontSize: 10,
+    marginBottom: 4,
+  },
   button: {
     backgroundColor: '#007AFF',
     borderRadius: 8,
@@ -96,3 +117,4 @@ const styles = {
     fontSize: 8,
   },
 };
+
