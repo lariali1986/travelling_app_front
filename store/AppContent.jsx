@@ -2,8 +2,45 @@ import { createContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AppContent = createContext({});
-
 export default function AppContentProvider(props) {
+  class Customer {
+    constructor() {
+      this.name = '';
+      this.username = '';
+      this.email = '';
+      this.password = '';
+    }
+    setCustomerName(name) {
+      this.name = name;
+    }
+    setCustomerUsername(username) {
+      this.username = username;
+    }
+    setCustomerEmail(email) {
+      this.email = email;
+    }
+    setCustomerPassword(password) {
+      this.password = password;
+    }
+  }
+
+  const [customer, setCustomer] = useState();
+
+  const [packages, setPackages] = useState();
+  const [flightID, setFlightID] = useState([]);
+  const [hotelID, setHotelID] = useState([]);
+  const [activityID, setActivityID] = useState([]);
+  const [daysCount, setDaysCount] = useState();
+  const [check_in_date, setCheck_in_date] = useState();
+  const [check_out_date, setCheck_out_date] = useState();
+  const [token, setToken] = useState(null);
+  const [agentToken, setAgentToken] = useState(null);
+  const [customerUsername, setCustomerUsername] = useState();
+  const [agentUsername, setAgentUsername] = useState();
+
+  const setTheCustomer = (customer) => {
+    setCustomer(customer);
+  };
   const predefinedPackages = require('../data/predefined_packages.json');
   const [packages, setPackages] = useState();
   const [flightID, setFlightID] = useState([]);
@@ -22,6 +59,22 @@ export default function AppContentProvider(props) {
     setPackages(packages);
   };
 
+
+  useEffect(() => {
+    async function fetchToken() {
+      const storedToken = await AsyncStorage.getItem('token');
+      const storedUsername = await AsyncStorage.getItem('customerUsername');
+      const storedAgentToken = await AsyncStorage.getItem('agentToken');
+      const storedAgentUsername = await AsyncStorage.getItem('agentUsername');
+      if (storedToken) {
+        setAuthToken(storedToken, storedUsername);
+      }
+      if (storedAgentToken) {
+        setAuthAgentToken(storedAgentToken, storedAgentUsername);
+      }
+    }
+    fetchToken();
+  }, []);
 useEffect(()=>{
   async function fetchToken(){
     const storedToken=await AsyncStorage.getItem('token');
@@ -96,8 +149,13 @@ useEffect(()=>{
   };
 
   const storedInfo = {
+    customer: customer,
     packages: packages,
+
+    customerUsername: customerUsername,
+
     customerUsername:customerUsername,
+
     agentUsername: agentUsername,
     hotelID: hotelID,
     flightID: flightID,
@@ -111,6 +169,8 @@ useEffect(()=>{
   };
 
   const setFcn = {
+    setTheCustomer: setTheCustomer,
+
     setTravelPackages: setTravelPackages,
     setAuthToken: setAuthToken,
     setAuthAgentToken: setAuthAgentToken,
@@ -125,12 +185,18 @@ useEffect(()=>{
     setNumOfDays: setNumOfDays,
     setDepartureDate: setDepartureDate,
     setReturnDate: setReturnDate,
-   
+
+  };
+  const systemClasses = {
+    customer: customer,
+
   };
 
   const value = {
     setFcn: setFcn,
     storedInfo: storedInfo,
+
+    systemClasses: systemClasses,
   };
 
   return (

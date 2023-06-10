@@ -16,17 +16,21 @@ import { useContext } from 'react';
 import { AppContent } from '../store/AppContent';
 import { getPackages } from '../util/auth';
 import LogoutModal from '../Components/ui/LogoutModal';
+
+import Customer from '../Classes/Customer';
+import SearchBox from '../Components/ui/SearchBox';
 import { Button } from 'native-base';
 
-//const predefinedPackages = require('../data/predefined_packages.json');
+
 const HomeScreen = ({ route }) => {
   const navigation = useNavigation();
-  const { storedInfo, setFcn } = useContext(AppContent);
+  const { storedInfo, setFcn, systemClasses } = useContext(AppContent);
   const [packages, setPackages] = useState();
   const [btn, setBtn] = useState('Home');
   const [destination, setDestination] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [visible, setVisible] = useState(false);
+
   //---
   const buttonRef = useRef(null);
   const [modalPosition, setModalPosition] = useState({
@@ -34,7 +38,20 @@ const HomeScreen = ({ route }) => {
     height: 0,
     left: 0,
   });
+
+
+  if (!!storedInfo.agentToken) {
+    navigation.navigate('Agent Panel');
+  }
+
+  const handleLogout = () => {
+    setVisible(false);
+    systemClasses.customer.logOut();
+    setFcn.logout();
+  };
+
   //---
+
 
   if (!!storedInfo.agentToken) {
     console.log('..........' + 'I am inside');
@@ -79,9 +96,10 @@ const HomeScreen = ({ route }) => {
       if (response.status == 200) {
         console.log('Hi');
         let jwtResponse = await response.json();
+        let customer = new Customer('', jwtResponse.userName, '', '');
+        setFcn.setTheCustomer(customer);
         setFcn.setTravelPackages(jwtResponse);
         setPackages(jwtResponse);
-        console.log('this is the response' + jwtResponse);
       }
       if (response.status != 200) {
         alert(response.stauts);
@@ -98,7 +116,9 @@ const HomeScreen = ({ route }) => {
   const handleSearch = () => {
     const filteredPackages = storedInfo.packages.filter((item) => {
       let packageDestination = item.flights[0].arrivalCity;
+
       console.log('this is destination ' + packageDestination);
+
       let packagePrice = item.price;
       let isDestinationMatch = true;
       let isPriceMatch = true;
@@ -119,8 +139,27 @@ const HomeScreen = ({ route }) => {
     console.log('filteredPackages ' + filteredPackages);
   };
 
+  const getButtonPosition = () => {
+    if (buttonRef.current) {
+      buttonRef.current.measure((x, y, width, height, pageX, pageY) => {
+        const screenHeight = Dimensions.get('window').height;
+        const modalTop = pageY + height - 380;
+        const modalHeight = screenHeight - modalTop - 100;
+        setModalPosition({ top: modalTop, height: modalHeight, left: 130 });
+        console.log(modalTop);
+        console.log(modalHeight);
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <ImageBackground
+        source={require('../assets/background2.png')} // Replace with the path to your image
+        style={styles.backgroundImage}
+        resizeMode='cover'
+      >
+
         <View style={styles.signOutWelcomeContainer}>
           {storedInfo.isAuthenticated && (
             <TouchableOpacity
@@ -149,6 +188,13 @@ const HomeScreen = ({ route }) => {
             btn == 'Home' ? styles.containerHome : styles.containerOtherScreen
           }
         >
+          <View
+            style={
+              storedInfo.isAuthenticated
+                ? styles.header
+                : [styles.header, { marginTop: 80 }]
+            }
+          >
           <View style={storedInfo.isAuthenticated? styles.header: [styles.header, {marginTop: 80}]}>
             {/*<Image source={require('../assets/logo.png')} style={styles.logo} />*/}
             <View style={styles.buttonContainer}>
@@ -196,6 +242,11 @@ const HomeScreen = ({ route }) => {
           </View>
 
           {btn === 'Home' && (
+            <SearchBox
+              setDestination={setDestination}
+              setMaxPrice={setMaxPrice}
+              handleSearch={handleSearch}
+            ></SearchBox>
             <View style={styles.makeMargin}>
               <Text style={[styles.headingText, {marginBottom:10}]}>Search Packages</Text>
               <View style={styles.searchContainer}>
@@ -220,10 +271,23 @@ const HomeScreen = ({ route }) => {
                 </TouchableOpacity>
               </View>
             </View>
+
           )}
 
           <View style={styles.container}>
             {btn === 'Home' && (
+              <Text
+                style={[
+                  styles.headingText,
+                  { color: 'yellow', textShadowColor: 'black' },
+                ]}
+              >
+                Available Packages
+              </Text>
+            )}
+            {btn === 'Home' && (
+              <View style={[styles.line, , { marginBottom: 1 }]} />
+            )}
               <Text style={[styles.headingText, {color:'yellow', textShadowColor: 'black'}]}>Available Packages</Text>
             )}
             {btn === 'Home' && <View style={[styles.line, , {marginBottom: 1}]} />}
@@ -234,6 +298,9 @@ const HomeScreen = ({ route }) => {
             {btn === 'Login' && <LoginScreen />}
           </View>
         </View>
+      </ImageBackground>
+
+
     </View>
   );
 };
@@ -241,7 +308,9 @@ const HomeScreen = ({ route }) => {
 const styles = {
   containerHome: {
     flex: 1,
+
     backgroundColor:'black',
+
   },
   container: {
     flex: 1,

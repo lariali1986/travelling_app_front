@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { AsyncStorage } from 'react-native';
@@ -11,9 +11,14 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import { signup } from '../util/auth';
 import { useContext } from 'react';
 import { AppContent } from '../store/AppContent';
+
+//---------Import employed classes--------------
+import Customer from '../Classes/Customer';
+
+const SignUpScreen = () => {
+  const { storedInfo, setFcn, systemClasses } = useContext(AppContent);
 import jwtDecode from 'jwt-decode';
 
 class Customer {
@@ -43,28 +48,68 @@ const SignUpScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const newCustomer = new Customer();
   const [customer, setCustomer] = useState(newCustomer);
+  const [name, setName]=useState();
+  const [password, setPassword]=useState();
+  const [email, setEmail]=useState();
+  const [username, setUsername]=useState();
 
   const handleNameChange = (name) => {
     newCustomer.setCustomerName(name);
     setCustomer(newCustomer);
+    setName(name);
     console.log(JSON.stringify(customer));
   };
 
   const handleUsernameChange = (username) => {
     newCustomer.setCustomerUsername(username);
     setCustomer(newCustomer);
+    setUsername(username);
+
     console.log(JSON.stringify(customer));
   };
 
   const handleEmailChange = (email) => {
     newCustomer.setCustomerEmail(email);
     setCustomer(newCustomer);
+    setEmail(email);
+
     console.log(JSON.stringify(customer));
   };
 
   const handlePasswordChange = (password) => {
     newCustomer.setCustomerPassword(password);
     setCustomer(newCustomer);
+    setPassword(password);
+    console.log(JSON.stringify(customer));
+  };
+  async function handleSignUp() {
+
+    const validityStatus = checkCredentials(
+      username,
+      email,
+      password,
+      confirmPassword
+    );
+    if (validityStatus.isValid) {
+      try {
+        const response = await customer.signUp(
+          name,
+          username,
+          email,
+          password
+        );
+        if (response.status == 200) {
+          let jwtResponse = await response.json();
+          setFcn.setTheCustomer(customer);
+          setFcn.setAuthToken(jwtResponse.api_token, jwtResponse.userName);
+          setFcn.setTravelPackages(jwtResponse.packages);
+          navigation.navigate('Home', { showHome: true });
+        }
+        if (response.status != 200) {
+          alert(response.stauts);
+        }
+      } catch (error) {
+        alert(error);
     console.log(JSON.stringify(customer));
   };
 
@@ -85,13 +130,16 @@ const SignUpScreen = () => {
       if (response.status != 200) {
         alert(response.stauts);
       }
-    } catch (error) {
-      alert(error);
+    } else {
+      alert(validityStatus.message);
     }
   }
 
   const handleBackToLogin = () => {
     navigation.navigate('Home');
+  };
+  const handleConfirmPass = (confirmPassword) => {
+    setConfirmPassword(confirmPassword);
   };
 
   return (
@@ -124,7 +172,8 @@ const SignUpScreen = () => {
         style={styles.input}
         placeholder='confirmPassword'
         secureTextEntry
-        onChangeText={setConfirmPassword}
+        value={confirmPassword}
+        onChangeText={handleConfirmPass}
       />
       <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Sign Up</Text>
@@ -135,6 +184,52 @@ const SignUpScreen = () => {
     </View>
   );
 };
+
+function checkCredentials(username, email, password, confirmPassword) {
+
+  console.log('...'+!!password || !!email || !!password || !!confirmPassword);
+  if (!password || !email || !password || !confirmPassword) {
+    console.log('Hi')
+    return {
+      isValid: false,
+      message: 'Please Fill in all the entries',
+    };
+  }
+
+
+  if (!!username && username.length < 8) {
+    return {
+      isValid: false,
+      message: 'Username should be at least 8 characters long.',
+    };
+  }
+
+  if (!!email && !email.includes('@')) {
+    return {
+      isValid: false,
+      message: 'Email should include the @ symbol.',
+    };
+  }
+
+  if (!!password && password.length < 8) {
+    return {
+      isValid: false,
+      message: 'Password should be at least 8 characters long.',
+    };
+  }
+
+  if (!!password && !!confirmPassword && password !== confirmPassword) {
+    return {
+      isValid: false,
+      message: 'Password and confirm password do not match.',
+    };
+  }
+
+  return {
+    isValid: true,
+    message: 'Credentials are correct.',
+  };
+}
 
 const styles = StyleSheet.create({
   container: {

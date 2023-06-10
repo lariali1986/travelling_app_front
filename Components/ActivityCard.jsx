@@ -1,5 +1,4 @@
 
-
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -56,6 +55,12 @@ const styles = {
     borderRadius: 16,
     margin: 8,
     width: '100%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
   },
   cardUnSelected: {
     flex: 1,
@@ -66,6 +71,20 @@ const styles = {
     width: '100%',
     alignItems: 'center',
     shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  image: {
+    width: '40%',
+    height: 120,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    resizeMode: 'cover',
   },
   textContainer: {
     padding: 6,
@@ -77,6 +96,11 @@ const styles = {
     fontWeight: 'bold',
     marginBottom: 2,
   },
+  textNotBold: {
+    fontSize: 10,
+    marginBottom: 4,
+  },
+
   button: {
     backgroundColor: '#007AFF',
     borderRadius: 8,
@@ -89,6 +113,8 @@ const styles = {
     fontSize: 8,
   },
 };
+
+
 
 
 

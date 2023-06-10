@@ -91,7 +91,7 @@ const CustomPackage = () => {
             value={departureDate}
             onChangeText={handleDepartureDateChange}
             style={styles.input}
-            placeholder='DD/MM/YY'
+            placeholder='YYYY-MM-DD'
           />
         </View>
         <View style={styles.inputContainer}>
@@ -100,7 +100,7 @@ const CustomPackage = () => {
             value={returnDate}
             onChangeText={handleReturnDateChange}
             style={styles.input}
-            placeholder='DD/MM/YY'
+            placeholder='YYYY-MM-DD'
           />
         </View>
       </View>

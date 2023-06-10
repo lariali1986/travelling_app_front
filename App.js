@@ -11,6 +11,7 @@ import HotelScreen from './Screens/HotelScreen';
 import ActivityScreen from './Screens/ActivityScreen';
 import ConfirmPackage from './Screens/CofirmPackage';
 import ConfPrePack from './Screens/ConfPrePack';
+import AgentPanelScreen from './Screens/AgentPanelScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -72,6 +73,12 @@ export default function App() {
             name='Confirm Pre Package'
             component={ConfPrePack}
             options={{ title: 'Confirmation' }}
+          />
+
+          <Stack.Screen
+            name='Agent Panel'
+            component={AgentPanelScreen}
+            options={{ title: 'Agent Panel' }}
           />
 
         </Stack.Navigator>
