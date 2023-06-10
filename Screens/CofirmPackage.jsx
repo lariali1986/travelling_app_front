@@ -41,12 +41,14 @@ const ConfirmPackage = ({ route }) => {
   const activityObj = activity.filter((item) =>
     storedInfo.activityID.includes(item.id)
   );
-  
+
   let hotelPrice = hotelObj.map(hotel => hotel.pricePerNight)
   let activityPrice = activityObj.map(activity => activity.price)
   console.log('...........'+JSON.stringify(flightObj))
   console.log(JSON.stringify(hotelObj));
   console.log(JSON.stringify(activityObj))
+
+
 
   //if (route.name=='Home')
 
@@ -68,6 +70,14 @@ const ConfirmPackage = ({ route }) => {
         flightObj[0].flightPrice,
         hotelPrice,
         activityPrice,
+        storedInfo.flightID[0].toString(),
+        storedInfo.hotelID[0].toString(),
+        storedInfo.activityID[0].toString(),
+        storedInfo.check_in_date,
+        storedInfo.check_out_date,
+        hotelObj.hotelPrice,
+        flightObj.flightPrice,
+        activityObj.activityPrice
       );
       console.log(response);
 
@@ -77,6 +87,8 @@ const ConfirmPackage = ({ route }) => {
 
         console.log(JSON.stringify(jwtResponse));
         //openURL(jwtResponse.url);
+        openURL(jwtResponse.url);
+
         console.log('...............' + jwtResponse.url);
       }
       if (response.status != 200) {

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import { AsyncStorage } from 'react-native';
+
 import {
   View,
   Text,
@@ -16,6 +19,31 @@ import Customer from '../Classes/Customer';
 
 const SignUpScreen = () => {
   const { storedInfo, setFcn, systemClasses } = useContext(AppContent);
+import jwtDecode from 'jwt-decode';
+
+class Customer {
+  constructor() {
+    this.name = '';
+    this.username = '';
+    this.email = '';
+    this.password = '';
+  }
+  setCustomerName(name) {
+    this.name = name;
+  }
+  setCustomerUsername(username) {
+    this.username = username;
+  }
+  setCustomerEmail(email) {
+    this.email = email;
+  }
+  setCustomerPassword(password) {
+    this.password = password;
+  }
+}
+
+const SignUpScreen = () => {
+  const { storedInfo, setFcn } = useContext(AppContent);
   const navigation = useNavigation();
   const [confirmPassword, setConfirmPassword] = useState('');
   const newCustomer = new Customer();
@@ -36,6 +64,7 @@ const SignUpScreen = () => {
     newCustomer.setCustomerUsername(username);
     setCustomer(newCustomer);
     setUsername(username);
+
     console.log(JSON.stringify(customer));
   };
 
@@ -43,6 +72,7 @@ const SignUpScreen = () => {
     newCustomer.setCustomerEmail(email);
     setCustomer(newCustomer);
     setEmail(email);
+
     console.log(JSON.stringify(customer));
   };
 
@@ -80,6 +110,25 @@ const SignUpScreen = () => {
         }
       } catch (error) {
         alert(error);
+    console.log(JSON.stringify(customer));
+  };
+
+  async function handleSignUp() {
+    try {
+      const response = await signup(
+        customer.name,
+        customer.username,
+        customer.email,
+        customer.password
+      );
+      if (response.status == 200) {
+        let jwtResponse = await response.json();
+        setFcn.setAuthToken(jwtResponse.api_token, jwtResponse.userName);
+        setFcn.setTravelPackages(jwtResponse.packages);
+        navigation.navigate('Home', { showHome: true });
+      }
+      if (response.status != 200) {
+        alert(response.stauts);
       }
     } else {
       alert(validityStatus.message);

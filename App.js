@@ -13,6 +13,7 @@ import ConfirmPackage from './Screens/CofirmPackage';
 import ConfPrePack from './Screens/ConfPrePack';
 import AgentPanelScreen from './Screens/AgentPanelScreen';
 
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -79,6 +80,7 @@ export default function App() {
             component={AgentPanelScreen}
             options={{ title: 'Agent Panel' }}
           />
+
         </Stack.Navigator>
       </NavigationContainer>
     </AppContentProvider>

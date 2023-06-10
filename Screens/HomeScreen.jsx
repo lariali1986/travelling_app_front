@@ -16,8 +16,11 @@ import { useContext } from 'react';
 import { AppContent } from '../store/AppContent';
 import { getPackages } from '../util/auth';
 import LogoutModal from '../Components/ui/LogoutModal';
+
 import Customer from '../Classes/Customer';
 import SearchBox from '../Components/ui/SearchBox';
+import { Button } from 'native-base';
+
 
 const HomeScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -27,12 +30,15 @@ const HomeScreen = ({ route }) => {
   const [destination, setDestination] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [visible, setVisible] = useState(false);
+
+  //---
   const buttonRef = useRef(null);
   const [modalPosition, setModalPosition] = useState({
     top: 0,
     height: 0,
     left: 0,
   });
+
 
   if (!!storedInfo.agentToken) {
     navigation.navigate('Agent Panel');
@@ -44,6 +50,33 @@ const HomeScreen = ({ route }) => {
     setFcn.logout();
   };
 
+  //---
+
+
+  if (!!storedInfo.agentToken) {
+    console.log('..........' + 'I am inside');
+    navigation.navigate('Agent Panel');
+  }
+
+  const getButtonPosition = () => {
+    if (buttonRef.current) {
+      buttonRef.current.measure((x, y, width, height, pageX, pageY) => {
+        const screenHeight = Dimensions.get('window').height;
+        const modalTop = pageY + height - 380;
+        const modalHeight = screenHeight - modalTop - 100;
+        setModalPosition({ top: modalTop, height: modalHeight, left: 130 });
+        console.log(modalTop);
+        console.log(modalHeight);
+      });
+    }
+  };
+
+  const handleLogout = () => {
+    setVisible(false);
+    setFcn.logout();
+  };
+
+  //if (storedInfo.isAuthenticated) {
   if (!!route.params) {
     const { showHome } = route.params;
     if (showHome) {
@@ -51,13 +84,17 @@ const HomeScreen = ({ route }) => {
         setBtn('Home');
         route.params = {};
       }
+      //  }
+      //activeHome = false;
     }
   }
 
   async function handlePackages() {
     try {
       const response = await getPackages();
+
       if (response.status == 200) {
+        console.log('Hi');
         let jwtResponse = await response.json();
         let customer = new Customer('', jwtResponse.userName, '', '');
         setFcn.setTheCustomer(customer);
@@ -79,6 +116,9 @@ const HomeScreen = ({ route }) => {
   const handleSearch = () => {
     const filteredPackages = storedInfo.packages.filter((item) => {
       let packageDestination = item.flights[0].arrivalCity;
+
+      console.log('this is destination ' + packageDestination);
+
       let packagePrice = item.price;
       let isDestinationMatch = true;
       let isPriceMatch = true;
@@ -119,6 +159,7 @@ const HomeScreen = ({ route }) => {
         style={styles.backgroundImage}
         resizeMode='cover'
       >
+
         <View style={styles.signOutWelcomeContainer}>
           {storedInfo.isAuthenticated && (
             <TouchableOpacity
@@ -154,6 +195,7 @@ const HomeScreen = ({ route }) => {
                 : [styles.header, { marginTop: 80 }]
             }
           >
+          <View style={storedInfo.isAuthenticated? styles.header: [styles.header, {marginTop: 80}]}>
             {/*<Image source={require('../assets/logo.png')} style={styles.logo} />*/}
             <View style={styles.buttonContainer}>
               <TouchableOpacity
@@ -205,6 +247,31 @@ const HomeScreen = ({ route }) => {
               setMaxPrice={setMaxPrice}
               handleSearch={handleSearch}
             ></SearchBox>
+            <View style={styles.makeMargin}>
+              <Text style={[styles.headingText, {marginBottom:10}]}>Search Packages</Text>
+              <View style={styles.searchContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder='Destination City'
+                  value={destination}
+                  onChangeText={setDestination}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder='Max Price'
+                  value={maxPrice}
+                  onChangeText={setMaxPrice}
+                  keyboardType='numeric'
+                />
+                <TouchableOpacity
+                  style={styles.searchButton}
+                  onPress={handleSearch}
+                >
+                  <Text style={styles.searchButtonText}>Search</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
           )}
 
           <View style={styles.container}>
@@ -221,6 +288,9 @@ const HomeScreen = ({ route }) => {
             {btn === 'Home' && (
               <View style={[styles.line, , { marginBottom: 1 }]} />
             )}
+              <Text style={[styles.headingText, {color:'yellow', textShadowColor: 'black'}]}>Available Packages</Text>
+            )}
+            {btn === 'Home' && <View style={[styles.line, , {marginBottom: 1}]} />}
             {btn === 'Home' && (
               <PackageCardGroup data={packages} style={styles.item} />
             )}
@@ -229,6 +299,8 @@ const HomeScreen = ({ route }) => {
           </View>
         </View>
       </ImageBackground>
+
+
     </View>
   );
 };
@@ -236,6 +308,9 @@ const HomeScreen = ({ route }) => {
 const styles = {
   containerHome: {
     flex: 1,
+
+    backgroundColor:'black',
+
   },
   container: {
     flex: 1,

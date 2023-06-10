@@ -32,10 +32,15 @@ const LoginScreen = () => {
       try {
         const response = await login(username, password);
         if (response.status === 200) {
+
           
           let jwtResponse = await response.json();
           console.log(jwtResponse);
           if (jwtResponse.status=='success') {
+
+          let jwtResponse = await response.json();
+          if (jwtResponse.status !== 'No Such User') {
+
             setFcn.setAuthToken(jwtResponse.api_token, jwtResponse.userName);
             setFcn.setTravelPackages(jwtResponse.packages);
             navigation.navigate('Home', { showHome: true });

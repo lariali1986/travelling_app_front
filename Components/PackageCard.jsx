@@ -100,7 +100,11 @@ const styles = {
     paddingVertical: 5,
   },
   buttonText: {
+
     color: 'white',
+
+    color: 'black',
+
     fontWeight: 'bold',
     fontSize: 8,
   },
