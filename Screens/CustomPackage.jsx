@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,13 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { getAvailableFHA } from '../util/auth';
+import { AppContent } from '../store/AppContent';
 
 const CustomPackage = () => {
+  const navigation = useNavigation();
+  const { storedInfo, setFcn } = useContext(AppContent);
   const [leavingFrom, setLeavingFrom] = useState('');
   const [goingTo, setGoingTo] = useState('');
   const [departureDate, setDepartureDate] = useState('');
@@ -31,15 +36,28 @@ const CustomPackage = () => {
     setReturnDate(text);
   };
 
-  const handleSubmit = () => {
-    // Handle the submission of the form
-    console.log('Submitted data:', {
-      leavingFrom: leavingFrom,
-      goingTo: goingTo,
-      departureDate: departureDate,
-      returnDate: returnDate,
-    });
-    // Perform any additional actions with the form data as needed
+  const handleSubmit = async () => {
+    const response = await getAvailableFHA(
+      leavingFrom,
+      goingTo,
+      departureDate,
+      returnDate
+    );
+    const responseBody = await response.json();
+    const flightList = responseBody.flights;
+    console.log('this is flight List     ' + JSON.stringify(flightList[0]));
+    //setFcn.setCustomFlightList(flightList);
+    //console.log(JSON.stringify(responseBody));
+    console.log('this is flight list ' + storedInfo.flightList);
+    navigation.navigate('Flight', { responseBody: responseBody });
+
+    const startDate = new Date(departureDate);
+    const endDate = new Date(returnDate);
+    const timeDifference = endDate - startDate;
+    const numberOfDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    setFcn.setNumOfDays(numberOfDays);
+    setFcn.setDepartureDate(departureDate);
+    setFcn.setReturnDate(returnDate);
   };
 
   return (
@@ -73,7 +91,7 @@ const CustomPackage = () => {
             value={departureDate}
             onChangeText={handleDepartureDateChange}
             style={styles.input}
-            placeholder='DD/MM/YY'
+            placeholder='YYYY-MM-DD'
           />
         </View>
         <View style={styles.inputContainer}>
@@ -82,7 +100,7 @@ const CustomPackage = () => {
             value={returnDate}
             onChangeText={handleReturnDateChange}
             style={styles.input}
-            placeholder='DD/MM/YY'
+            placeholder='YYYY-MM-DD'
           />
         </View>
       </View>

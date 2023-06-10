@@ -4,59 +4,69 @@ import { useNavigation } from '@react-navigation/native';
 import { useContext, useState } from 'react';
 import { AppContent } from '../store/AppContent';
 
-export default function PackageCard({ item }) {
+export default function ActivityCard({ item, activeList }) {
   const navigation = useNavigation();
   const { storedInfo, setFcn } = useContext(AppContent);
   const [isLogin, setIsLogin] = useState(false);
+  const [btnTxt, setBtnTxt] = useState('Book');
+
+  if (activeList.includes(item.id) && btnTxt == 'Book') {
+    console.log('I am in item id ' + item.id);
+    setBtnTxt('Cancel');
+  }
+
+  let flight = [];
 
   function pressHandler() {
-    console.log('insdie card is my knowledge' + !storedInfo.isAuthenticated);
-    if (!storedInfo.isAuthenticated) {
-      alert('Please Login First');
-    } else {
-      navigation.navigate('Confirm Pre Package', {packageInfo: item});
+    if (btnTxt === 'Book') {
+      setBtnTxt('Cancel');
+      if (!storedInfo.activityID.includes(item.id)) {
+        setFcn.addActivityId([item.id]);
+      }
+    }
+    if (btnTxt === 'Cancel') {
+      setBtnTxt('Book');
+      setFcn.rmvActivityId(item.id);
     }
   }
 
   return (
-    <TouchableOpacity style={styles.card}>
-      <Image
-        source={{ uri: require('../assets/Rome.png') }}
-        style={styles.image}
-      />
+    <TouchableOpacity
+      style={btnTxt === 'Book' ? styles.cardUnSelected : styles.cardSelected}
+    >
       <View style={styles.textContainer}>
-      <Text style={styles.textBold}>
-          {item.packageName}
-        </Text>
+        <Text style={styles.textBold}>{item.activityName}</Text>
         <Text style={styles.textBold}>
-          {item.flights[0].arrivalCountry + ', ' + item.flights[0].arrivalCity}
+          {item.price+' $'}
         </Text>
-        <Text style={styles.textNotBold}>
-          {item.daysCount + ' Days, ' }
-        </Text>
-        <Text style={styles.textBold}>
-          {item.hotels[0].hotelName}
-        </Text>
-        
-        
-        <Text style={styles.textNotBold}>
-          {'Activities: ' + item.activities[0].activityName}
-        </Text>
-        <Text style={styles.textNotBold}>{item.price + ' $'}</Text>
         <TouchableOpacity style={styles.button} onPress={pressHandler}>
-          <Text style={styles.buttonText}>Book Now</Text>
+          <Text style={styles.buttonText}>{btnTxt}</Text>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
 }
-
 const styles = {
-  card: {
+  cardSelected: {
     flex: 1,
+    backgroundColor: 'lightgreen',
     flexDirection: 'row',
     borderRadius: 16,
-    margin: 4,
+    margin: 8,
+    width: '100%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
+  cardUnSelected: {
+    flex: 1,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    borderRadius: 16,
+    margin: 8,
     width: '100%',
     alignItems: 'center',
     shadowColor: '#000',
@@ -67,8 +77,6 @@ const styles = {
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    borderBottomColor: 'purple',
-    borderBottomWidth: 5,
   },
   image: {
     width: '40%',
@@ -86,12 +94,10 @@ const styles = {
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 2,
-    color: 'white',
   },
   textNotBold: {
     fontSize: 10,
     marginBottom: 4,
-    color: 'white'
   },
   button: {
     backgroundColor: '#007AFF',
@@ -100,7 +106,7 @@ const styles = {
     paddingVertical: 5,
   },
   buttonText: {
-    color: 'white',
+    color: '#fff',
     fontWeight: 'bold',
     fontSize: 8,
   },
