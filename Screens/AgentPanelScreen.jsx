@@ -1,48 +1,18 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useEffect} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Sidebar from '../Components/ui/sideBar';
 import { AppContent } from '../store/AppContent';
-import LogoutModal from '../Components/ui/LogoutModal';
+import LogOutAgent from '../Components/ui/LogOutAgent';
 import { useNavigation } from '@react-navigation/native';
+import { viewBooking } from '../util/auth';
+import ViewBookingCardGroup from '../Components/ViewBookingCardGroup';
 
 
 const AgentPanelScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
   const { storedInfo, setFcn } = useContext(AppContent);
-  const [visible, setVisible] = useState(false);
-  const buttonRef = useRef(null);
-  const navigation=useNavigation();
-  console.log(storedInfo.agentUsername);
-  const [modalPosition, setModalPosition] = useState({
-    top: 0,
-    height: 0,
-    left: 0,
-  });
-
-  const handleLogout = () => {
-    setVisible(false);
-    setFcn.agentLogout();
-    navigation.navigate('Home', {showHome: true});
-    
-  };
-
-  const getButtonPosition = () => {
-    if (buttonRef.current) {
-      buttonRef.current.measure((x, y, width, height, pageX, pageY) => {
-        const screenHeight = Dimensions.get('window').height;
-        const modalTop = pageY + height - 380;
-        const modalHeight = screenHeight - modalTop - 100;
-        setModalPosition({ top: modalTop, height: modalHeight, left: 0 });
-        console.log(modalTop);
-        console.log(modalHeight);
-      });
-    }
-  };
-
-  const handleOptionPress = (option) => {
-    setSelectedOption(option);
-    // Handle logic to display related information based on the selected option
-  };
+  const navigation = useNavigation();
 
   const options = [
     'View Booking',
@@ -51,32 +21,96 @@ const AgentPanelScreen = () => {
     'View Package',
     'Report',
   ];
+  const handleOptionPress = (option) => {
+    setSelectedOption(option);
+    if (selectedOption=='Report'){
+      handleReport();
+
+    }
+    if (selectedOption=='Create Package'){
+      navigation.navigate('Create Package');
+
+    }
+    // Handle logic to display related information based on the selected option
+  };
+
+  
+  //=========View Booking===========================
+  useEffect(() => {
+    const handleViewBooking =async () => {
+      try {
+        const response = await viewBooking();
+        if (response.status == 200) {
+          console.log('I am here........')
+          let jwtResponse = await response.json();
+          setFcn.updateAgentBookingList(jwtResponse)
+          console.log(jwtResponse.bookings);
+        }
+        if (response.status != 200) {
+          alert(response.stauts);
+        }
+      } catch (error) {
+        alert(error);
+      }
+    }
+    handleViewBooking();
+  }, []);
+
+  //==============Report=================
+    const handleReport =async () => {
+      try {
+        const response = await viewReport();
+        if (response.status == 200) {
+          console.log('I am here........')
+          let jwtResponse = await response.json();
+          console.log(JSON.stringify(jwtResponse));
+        }
+        if (response.status != 200) {
+          alert(response.stauts);
+        }
+      } catch (error) {
+        alert(error);
+      }
+    }
+  //========================================
+
+
+
+  const handleLogout = () => {
+    setModalVisible(false);
+    setFcn.agentLogout();
+    navigation.navigate('Home', { showHome: true });
+  };
+
+ 
+
+
 
   return (
     <View>
       <View>
         <View style={styles.containerHeader}>
-          <Text style={{ fontWeight: 'bold' }}>
-            Welcome {storedInfo.agentUsername}!
-          </Text>
+          <View style={styles.welcomeContainer}>
+            <Text style={{flex: 2, justifyContent: 'flex-end', fontWeight: 'bold'}}>
+              Welcome {storedInfo.agentUsername}!
+            </Text>
+          </View>
           <TouchableOpacity
             style={styles.signOutContainer}
-            ref={buttonRef}
+            //ref={buttonRef}
             onPress={() => {
-              setVisible(true);
-              getButtonPosition();
+              setModalVisible(true);
+              //getButtonPosition();
             }}
           >
             <Text style={styles.signOutText}>Sign out</Text>
           </TouchableOpacity>
+          <LogOutAgent
+            visible={modalVisible}
+            onCancel={() => setModalVisible(false)}
+            onLogout={handleLogout}
+          />
         </View>
-
-        <LogoutModal
-          visible={visible}
-          modalPosition={modalPosition}
-          onCancel={() => setVisible(false)}
-          onLogout={handleLogout}
-        />
       </View>
 
       <View style={styles.container}>
@@ -86,9 +120,11 @@ const AgentPanelScreen = () => {
           onOptionPress={handleOptionPress}
         />
         <View style={styles.content}>
-          {/* Display related information based on the selected option */}
-          {selectedOption && (
-            <Text>{`Selected Option: ${selectedOption}`}</Text>
+          {selectedOption=='View Booking' && (
+            <ViewBookingCardGroup data={storedInfo.agentBookingList}/>
+          )}
+           {selectedOption=='Report' && (
+            <ViewBookingCardGroup data={storedInfo.agentBookingList}/>
           )}
         </View>
       </View>
@@ -100,14 +136,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: 'lightyellow',
+    backgroundColor: 'lightgreen',
   },
   containerHeader: {
+    flex: 1,
     flexDirection: 'row',
     fontWeight: 'bold',
-    color: 'blue',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  welcomeContainer: {
+    flex:1,
+    alignItems: 'flex-end'
   },
   content: {
     flex: 3,
@@ -115,12 +155,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: 'pink',
   },
-  signOut: {
+  signOutContainer: {
     flex: 1,
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
+  signOutText:{
+    color: 'blue',
+    fontWeight: 'bold',
+  }
 });
 
 export default AgentPanelScreen;

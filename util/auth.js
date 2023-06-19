@@ -106,35 +106,34 @@ export async function bookPackage(
   return response;
 }
 
-/*
-export async function login(username, password) {
-  const response = await fetch(url + 'login', {
+export async function viewUserBooking(api_token)
+{
+  const response = await fetch(url + 'viewBooking', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({
+      api_token
+    }),
   });
   return response;
 }
 
-
-
-export async function signupConfirm(username, confirmationCode) {
-  const response = await fetch(url + 'signup/confirm', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, confirmationCode }),
-  });
-  return response;
-}
-
-export async function getEvents(token) {
-  const response = await fetch(url + 'event', {
+export async function viewBooking() {
+  const response = await fetch(url + 'viewBooking', {
     method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
   });
   return response;
 }
-*/
+
+export async function deleteBooking(bookingId) {
+  const response = await fetch(url + 'delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      bookingId
+    }),
+  });
+  return response;
+}
+

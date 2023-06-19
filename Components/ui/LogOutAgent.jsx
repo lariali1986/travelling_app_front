@@ -1,22 +1,23 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 
-const LogoutModal = ({ visible, modalPosition, onMyAccount, onLogout }) => {
+const LogOutAgent = ({ visible, onCancel, onLogout }) => {
   return (
     <Modal
-      animationType='fade'
+      animationType='slide'
       transparent={true}
       visible={visible}
+      onRequestClose={onCancel}
     >
-      <View style={[styles.modalContainer, modalPosition]}>
+      <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          {/*<Text style={styles.modalMessage}>Are you sure to sign out?</Text>*/}
+          <Text style={styles.modalMessage}>Are you sure to sign out?</Text>
           <View style={styles.modalButtonContainer}>
             <TouchableOpacity
               style={styles.modalCancelButton}
-              onPress={onMyAccount}
+              onPress={onCancel}
             >
-              <Text style={styles.modalButtonText}>My Account</Text>
+              <Text style={styles.modalButtonText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.modalSignOutButton}
@@ -36,37 +37,38 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 10,
+    padding: 20,
   },
   modalMessage: {
     fontSize: 18,
     marginBottom: 20,
-    color: 'blue',
   },
   modalButtonContainer: {
+    flexDirection: 'row',
     justifyContent: 'space-around',
   },
   modalCancelButton: {
+    backgroundColor: 'gray',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    borderBottomColor: 'black', 
   },
   modalSignOutButton: {
+    backgroundColor: 'red',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   modalButtonText: {
-    color: 'blue',
-    fontSize: 12,
+    color: 'white',
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });
 
-export default LogoutModal;
+export default LogOutAgent;

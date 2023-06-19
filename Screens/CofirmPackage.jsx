@@ -76,7 +76,7 @@ const ConfirmPackage = ({ route }) => {
         let jwtResponse = await response.json();
 
         console.log(JSON.stringify(jwtResponse));
-        //openURL(jwtResponse.url);
+        openURL(jwtResponse.url);
         console.log('...............' + jwtResponse.url);
       }
       if (response.status != 200) {

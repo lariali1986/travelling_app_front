@@ -1,10 +1,17 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import PackageCard from './PackageCard';
 import { useNavigation } from '@react-navigation/native';
+import ViewBookingCard from './ViewBookingCard';
+import { useContext } from 'react';
+import { AppContent } from '../store/AppContent';
 
-export default function PackageCardGroup({ data }) {
+
+export default function ViewBookingCardGroup({ data }) {
   const navigation = useNavigation();
+  const { storedInfo, setFcn } = useContext(AppContent);
+  //const [activeFlight, setActiveFlight]=useContext();
+
+  console.log('my type is: ', navigation);
   //const image1 = require('../assets/icon.png');
 
   return (
@@ -13,10 +20,7 @@ export default function PackageCardGroup({ data }) {
       keyExtractor={(item) => item.id}
       numColumns={1}
       renderItem={({ item }) => (
-        <PackageCard
-          item={item}
-          
-        />
+        <ViewBookingCard item={item} />
       )}
       contentContainerStyle={styles.cardGroup}
     />

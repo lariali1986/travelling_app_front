@@ -14,7 +14,7 @@ import LoginScreen from '../Components/LoginScreen';
 import { useNavigation } from '@react-navigation/native';
 import { useContext } from 'react';
 import { AppContent } from '../store/AppContent';
-import { getPackages } from '../util/auth';
+import { getPackages, viewUserBooking } from '../util/auth';
 import LogoutModal from '../Components/ui/LogoutModal';
 import Customer from '../Classes/Customer';
 import SearchBox from '../Components/ui/SearchBox';
@@ -43,6 +43,25 @@ const HomeScreen = ({ route }) => {
     systemClasses.customer.logOut();
     setFcn.logout();
   };
+  
+  const handleOnMyAccount =async () => {
+    setVisible(false);
+    try {
+      const response = await viewUserBooking(storedInfo.token);
+      if (response.status == 200) {
+        let jwtResponse = await response.json();
+        navigation.navigate('User Profile')
+      }
+      if (response.status != 200) {
+        alert(response.stauts);
+      }
+    } catch (error) {
+      alert(error);
+    }
+  }
+    
+  
+
 
   if (!!route.params) {
     const { showHome } = route.params;
@@ -115,7 +134,7 @@ const HomeScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../assets/background2.png')} // Replace with the path to your image
+        source={require('../assets/main.png')} // Replace with the path to your image
         style={styles.backgroundImage}
         resizeMode='cover'
       >
@@ -151,7 +170,7 @@ const HomeScreen = ({ route }) => {
             style={
               storedInfo.isAuthenticated
                 ? styles.header
-                : [styles.header, { marginTop: 80 }]
+                : [styles.header, { marginTop: 50 }]
             }
           >
             {/*<Image source={require('../assets/logo.png')} style={styles.logo} />*/}
@@ -192,7 +211,7 @@ const HomeScreen = ({ route }) => {
                 <LogoutModal
                   visible={visible}
                   modalPosition={modalPosition}
-                  onCancel={() => setVisible(false)}
+                  onMyAccount={handleOnMyAccount}
                   onLogout={handleLogout}
                 />
               )}
@@ -278,7 +297,7 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 100,
     paddingHorizontal: 8,
     width: '90%',
   },

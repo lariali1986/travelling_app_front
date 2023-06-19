@@ -37,6 +37,7 @@ export default function AppContentProvider(props) {
   const [agentToken, setAgentToken] = useState(null);
   const [customerUsername, setCustomerUsername] = useState();
   const [agentUsername, setAgentUsername] = useState();
+  const [agentBookingList, setAgentBookingList] = useState();
 
   const setTheCustomer = (customer) => {
     setCustomer(customer);
@@ -90,6 +91,10 @@ export default function AppContentProvider(props) {
     AsyncStorage.removeItem('agentUsername');
   };
 
+  const updateAgentBookingList = (agentBookingList) => {
+    setAgentBookingList(agentBookingList)
+    };
+
   const addFlightId = (newFlightID) => {
     setFlightID([...flightID, ...newFlightID]);
   };
@@ -133,6 +138,7 @@ export default function AppContentProvider(props) {
     token: token,
     agentToken: agentToken,
     isAuthenticated: !!token,
+    agentBookingList: agentBookingList,
   };
 
   const setFcn = {
@@ -152,6 +158,7 @@ export default function AppContentProvider(props) {
     setNumOfDays: setNumOfDays,
     setDepartureDate: setDepartureDate,
     setReturnDate: setReturnDate,
+    updateAgentBookingList: updateAgentBookingList,
   };
   const systemClasses = {
     customer: customer,
