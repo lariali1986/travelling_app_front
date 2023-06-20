@@ -64,7 +64,7 @@ export async function createPackage(
   check_out_date,
   flightPrice,
   hotelPrice,
-  activityPrice,
+  activityPrice
 ) {
   const response = await fetch(url + 'createPackage', {
     method: 'POST',
@@ -84,13 +84,12 @@ export async function createPackage(
   return response;
 }
 
-
 export async function bookPackage(
   api_token,
   package_id,
   check_in_date,
   check_out_date,
-  total_price,
+  total_price
 ) {
   const response = await fetch(url + 'booking', {
     method: 'POST',
@@ -106,13 +105,12 @@ export async function bookPackage(
   return response;
 }
 
-export async function viewUserBooking(api_token)
-{
+export async function viewUserBooking(api_token) {
   const response = await fetch(url + 'viewBooking', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      api_token
+      api_token,
     }),
   });
   return response;
@@ -127,13 +125,37 @@ export async function viewBooking() {
 }
 
 export async function deleteBooking(bookingId) {
-  const response = await fetch(url + 'delete', {
-    method: 'POST',
+  const response = await fetch(url + 'booking', {
+    method: 'delete',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      bookingId
+      bookingId,
     }),
   });
   return response;
 }
+
+export async function deletePackage(packageId) {
+  const response = await fetch(url + 'packages', {
+    method: 'delete',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      packageId,
+    }),
+  });
+  return response;
+}
+
+export async function agentCreatePackage(flight_ids, hotel_ids, activity_ids, packageName, daysCount) {
+  const response = await fetch(url + 'preDefineCreate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      flight_ids, hotel_ids, activity_ids, packageName, daysCount
+    }),
+  });
+  return response;
+}
+
+
 

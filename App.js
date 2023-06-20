@@ -13,6 +13,7 @@ import ConfirmPackage from './Screens/CofirmPackage';
 import ConfPrePack from './Screens/ConfPrePack';
 import AgentPanelScreen from './Screens/AgentPanelScreen';
 import UserProfileScreen from './Screens/UserProfileScreen';
+import AgentFlightScreen from './Screens/AgentFlightScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -86,6 +87,13 @@ export default function App() {
             component={UserProfileScreen}
             options={{ title: 'Profile' }}
           />
+
+<Stack.Screen
+            name='Agent Flight'
+            component={AgentFlightScreen}
+            options={{ title: 'Select Flight' }}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </AppContentProvider>

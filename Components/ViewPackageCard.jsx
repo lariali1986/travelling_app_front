@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useState} from 'react';
-import { deleteBooking } from '../util/auth';
+import { deletePackage } from '../util/auth';
 
-export default function ViewBookingCard({ item }) {
+export default function ViewPackageCard({ item }) {
   const [show, setShow] = useState(true);
  
   //===delete a booking from booking list====
-  const handleDeleteBooking = async () => {
+  const handleDeletePackage = async () => {
     try {
-      const response = await deleteBooking(item.id);
+      const response = await deletePackage(item.id);
       if (response.status == 200) {
         setShow(false);
       }
@@ -22,19 +22,17 @@ export default function ViewBookingCard({ item }) {
   };
 //================================================
   return (
-    
+
     <TouchableOpacity style={styles.viewCard}>
       {show &&<View style={styles.textContainer}>
-        <Text style={styles.textBold}>Booking ID: {item.id}</Text>
-        <Text style={styles.textBold}>Booking Date:</Text>
-        <Text style={styles.textBold}>  {item.bookingDate}</Text>
-        <Text style={styles.textBold}>Departure Date: </Text>
-        <Text style={styles.textBold}>  {item.departureDate}</Text>
-        <Text style={styles.textBold}>Return Date: {item.returnDate}</Text>
-        <Text style={styles.textBold}>CustomerId: {item.customerId}</Text>
-        <Text style={styles.textBold}>Packagae ID: {item.packageId}</Text>
+        <Text style={styles.textBold}>{item.packageName}</Text>
+        <Text style={styles.textBold}>{item.flights[0].arrivalCountry + ', ' + item.flights[0].arrivalCity}</Text>
+        <Text style={styles.textBold}>{item.daysCount + ' Days, '}</Text>
+        <Text style={styles.textBold}>{item.hotels[0].hotelName} </Text>
+        <Text style={styles.textBold}> {'Activities: ' + item.activities[0].activityName}</Text>
+        <Text style={styles.textBold}>{item.price + ' $'}</Text>
 
-        <TouchableOpacity style={styles.button} onPress={handleDeleteBooking}>
+        <TouchableOpacity style={styles.button} onPress={handleDeletePackage}>
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
 
