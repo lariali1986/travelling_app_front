@@ -1,19 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useContext } from 'react';
-import { AppContent } from '../store/AppContent';
 import AgentHotelCard from './AgentHotelCard';
 
+export default function AgentHotelCardGroup({ data, sendHotelsToHotelScreen }) {
+  const [selectedHotels, setSelectedHotels] = useState([0]);
 
+  sendHotelsToHotelScreen(selectedHotels);
+  console.log("this is selected hotels"+selectedHotels)
 
-export default function AgentHotelCardGroup({ data }) {
-  const navigation = useNavigation();
-  const {storedInfo, setFcn}=useContext(AppContent);
-  //const [activeFlight, setActiveFlight]=useContext();
+  const getSelectedHotels = (element, action) => {
+    if (action == 'add') {
+      setSelectedHotels([...selectedHotels, element]);
+    } else if (action == 'rmv') {
+      setSelectedHotels(selectedHotels.filter((item) => item !== element));
+    }
+  };
 
-  console.log('my type is: ', navigation);
-  //const image1 = require('../assets/icon.png');
+  let active = selectedHotels;
 
   return (
     <FlatList
@@ -22,8 +25,9 @@ export default function AgentHotelCardGroup({ data }) {
       numColumns={1}
       renderItem={({ item }) => (
         <AgentHotelCard
-          item={item} activeList={storedInfo.hotelID}
-          
+          item={item}
+          active={active}
+          sendSelectedToParent={getSelectedHotels}
         />
       )}
       contentContainerStyle={styles.cardGroup}

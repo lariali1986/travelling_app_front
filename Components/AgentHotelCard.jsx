@@ -1,32 +1,23 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useContext, useState } from 'react';
-import { AppContent } from '../store/AppContent';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 
-export default function AgentHotelCard({ item, activeList }) {
-  const navigation = useNavigation();
-  const { storedInfo, setFcn } = useContext(AppContent);
-  const [isLogin, setIsLogin] = useState(false);
+export default function AgentHotelCard({ item, active, sendSelectedToParent }) {
   const [btnTxt, setBtnTxt] = useState('Book');
 
-  if (activeList.includes(item.id) && btnTxt == 'Book') {
-    console.log('I am in item id ' + item.id);
+  //==coming back to page keep the selected items displayed
+  if (active.includes(item.id) && btnTxt == 'Book') {
     setBtnTxt('Cancel');
   }
 
-  let flight = [];
-
-  function pressHandler() {
+  //=====Start: Store the selected Items as a List============
+  function selectItemHandler() {
     if (btnTxt === 'Book') {
       setBtnTxt('Cancel');
-      if (!storedInfo.hotelID.includes(item.id)) {
-        setFcn.addHotelId([item.id]);
+      sendSelectedToParent(item.id, 'add');
       }
-    }
     if (btnTxt === 'Cancel') {
       setBtnTxt('Book');
-      setFcn.rmvHotelId(item.id);
+      sendSelectedToParent(item.id, 'rmv');
     }
   }
 
@@ -40,7 +31,7 @@ export default function AgentHotelCard({ item, activeList }) {
         <Text style={styles.textBold}>
           {'Price Per Night: ' + item.pricePerNight}
         </Text>
-        <TouchableOpacity style={styles.button} onPress={pressHandler}>
+        <TouchableOpacity style={styles.button} onPress={selectItemHandler}>
           <Text style={styles.buttonText}>{btnTxt}</Text>
         </TouchableOpacity>
       </View>

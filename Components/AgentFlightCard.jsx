@@ -1,54 +1,48 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useContext, useState } from 'react';
-import { AppContent } from '../store/AppContent';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 
-export default function AgentFlightCard({ item, active}) {
-  const navigation = useNavigation();
-  const { storedInfo, setFcn } = useContext(AppContent);
-  const [isLogin, setIsLogin] = useState(false);
+export default function AgentFlightCard({ item, active, sendSelectedToParent }) {
   const [btnTxt, setBtnTxt] = useState('Book');
 
-  if (item.id==active && btnTxt=='Book'){
-    console.log('I am in item id '+item.id);
+  //==coming back to page keep the selected items displayed
+  if (active.includes(item.id) && btnTxt == 'Book') {
     setBtnTxt('Cancel');
   }
 
-  let flight = [];
-
-  function pressHandler() {
+  //=====Start: Store the selected Items as a List============
+  function selectItemHandler() {
     if (btnTxt === 'Book') {
       setBtnTxt('Cancel');
-      if (!storedInfo.flightIDAgent.includes(item.id)){
-        setFcn.addFlightIdAgent([item.id]);}
-    }
+      sendSelectedToParent(item.id, 'add');
+      }
     if (btnTxt === 'Cancel') {
       setBtnTxt('Book');
-      setFcn.rmvFlightIdAgent(item.id);
+      sendSelectedToParent(item.id, 'rmv');
     }
   }
 
   return (
-    <TouchableOpacity style={btnTxt==='Book'? styles.cardUnSelected:styles.cardSelected}>
+    <View>
+    <TouchableOpacity
+      style={btnTxt === 'Book' ? styles.cardUnSelected : styles.cardSelected}
+    >
       <View style={styles.textContainer}>
         <Text style={styles.textBold}>
-           {'Flight Number: '+item.flightNumber}
+          {'Flight Number: ' + item.flightNumber}
         </Text>
         <Text style={styles.textBold}>
-          {'from '+item.departureCity + ' to ' + item.arrivalCity }
+          {'from ' + item.departureCity + ' to ' + item.arrivalCity}
         </Text>
         <Text style={styles.textBold}>
-          {'Departure Time: '+item.departureTime}
+          {'Departure Time: ' + item.departureTime}
         </Text>
-        <Text style={styles.textBold}>
-          {'Price: '+item.flightPrice}
-        </Text>
-        <TouchableOpacity style={styles.button} onPress={pressHandler}>
+        <Text style={styles.textBold}>{'Price: ' + item.flightPrice}</Text>
+        <TouchableOpacity style={styles.button} onPress={selectItemHandler}>
           <Text style={styles.buttonText}>{btnTxt}</Text>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
+    </View>
   );
 }
 const styles = {
@@ -66,19 +60,19 @@ const styles = {
       height: 2,
     },
   },
-    cardUnSelected: {
-      flex: 1,
-      backgroundColor: 'white',
-      flexDirection: 'row',
-      borderRadius: 16,
-      margin: 8,
-      width: '100%',
-      alignItems: 'center',
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
+  cardUnSelected: {
+    flex: 1,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    borderRadius: 16,
+    margin: 8,
+    width: '100%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
@@ -105,7 +99,7 @@ const styles = {
     marginBottom: 4,
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: 'black',
     borderRadius: 8,
     paddingHorizontal: 5,
     paddingVertical: 5,

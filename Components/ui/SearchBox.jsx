@@ -4,7 +4,7 @@ const SearchBox = ({ setDestination, setMaxPrice, handleSearch }) => {
   
   return (
     <View style={styles.makeMargin}>
-      <Text style={[styles.headingText, { marginBottom: 10 }]}>
+      <Text style={[styles.headingText, { marginBottom: 10, color: '#424242', fontWeight: 'bold'}]}>
         Search Packages
       </Text>
       <View style={styles.searchContainer}>
@@ -52,6 +52,7 @@ const styles = {
     justifyContent: 'center',
     flexDirection: 'row',
     padding: 1,
+    color:'EEEEEE',
   },
   makeMargin: {
     marginBottom: 20,
@@ -60,14 +61,15 @@ const styles = {
   input: {
     height: 28,
     width: '35%',
-    borderColor: 'white',
-    color: 'white',
+    borderColor: '616161',
+    color: 'black',
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 8,
     marginTop: 8,
     borderRadius: 5,
     marginRight: 12,
+    backgroundColor: '#EEEEEE'
   },
   header: {
     flexDirection: 'row',
@@ -80,7 +82,7 @@ const styles = {
   line: {
     height: 1.8,
     width: '80%',
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     marginTop: 6,
   },
   signOutContainer: {
@@ -102,11 +104,11 @@ const styles = {
   headingText: {
     fontSize: 16,
     paddingTop: 10,
-    fontWeight: 'bold',
+    fontWeight: '616161',
     paddingHorizontal: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'yellow',
+    color: 'black',
   },
   logo: {
     width: '15%',

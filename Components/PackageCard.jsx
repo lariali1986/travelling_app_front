@@ -14,7 +14,7 @@ export default function PackageCard({ item }) {
     if (!storedInfo.isAuthenticated) {
       alert('Please Login First');
     } else {
-      navigation.navigate('Confirm Pre Package', {packageInfo: item});
+      navigation.navigate('Confirm Pre Package', { packageInfo: item });
     }
   }
 
@@ -25,20 +25,13 @@ export default function PackageCard({ item }) {
         style={styles.image}
       />
       <View style={styles.textContainer}>
-      <Text style={styles.textBold}>
-          {item.packageName}
-        </Text>
+        <Text style={styles.textBold}>{item.packageName}</Text>
         <Text style={styles.textBold}>
           {item.flights[0].arrivalCountry + ', ' + item.flights[0].arrivalCity}
         </Text>
-        <Text style={styles.textNotBold}>
-          {item.daysCount + ' Days, ' }
-        </Text>
-        <Text style={styles.textBold}>
-          {item.hotels[0].hotelName}
-        </Text>
-        
-        
+        <Text style={styles.textNotBold}>{item.daysCount + ' Days, '}</Text>
+        <Text style={styles.textBold}>{item.hotels[0].hotelName}</Text>
+
         <Text style={styles.textNotBold}>
           {'Activities: ' + item.activities[0].activityName}
         </Text>
@@ -59,16 +52,12 @@ const styles = {
     margin: 4,
     width: '100%',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    borderBottomColor: 'purple',
-    borderBottomWidth: 5,
+    backgroundColor: '#EEEEEE',
+    shadowColor: 'black',
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 1, height: 2 },
+    shadowRadius: 4,
+    elevation: 2,
   },
   image: {
     width: '40%',
@@ -86,12 +75,12 @@ const styles = {
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 2,
-    color: 'white',
+    color: '#424242',
   },
   textNotBold: {
     fontSize: 10,
     marginBottom: 4,
-    color: 'white'
+    color: '#424242',
   },
   button: {
     backgroundColor: '#007AFF',

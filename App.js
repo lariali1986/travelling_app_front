@@ -14,6 +14,9 @@ import ConfPrePack from './Screens/ConfPrePack';
 import AgentPanelScreen from './Screens/AgentPanelScreen';
 import UserProfileScreen from './Screens/UserProfileScreen';
 import AgentFlightScreen from './Screens/AgentFlightScreen';
+import AgentHotelScreen from './Screens/AgentHotelScreen';
+import AgentActivityScreen from './Screens/AgentActivityScreen';
+import AgentCofirmPackageScreen from './Screens/AgentConfirmPackage';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +25,7 @@ export default function App() {
     <AppContentProvider>
       <NavigationContainer>
         <Stack.Navigator>
+
           <Stack.Screen
             name='Home'
             component={HomeScreen}
@@ -76,10 +80,16 @@ export default function App() {
             options={{ title: 'Confirmation' }}
           />
 
+<Stack.Screen
+            name='Agent Flight'
+            component={AgentFlightScreen}
+            options={{ title: 'Flight Selection' }}
+          />
+
           <Stack.Screen
             name='Agent Panel'
             component={AgentPanelScreen}
-            options={{ title: 'Agent Panel' }}
+            options={{ headerShown: false  }}
           />
 
 <Stack.Screen
@@ -88,11 +98,26 @@ export default function App() {
             options={{ title: 'Profile' }}
           />
 
+
+
 <Stack.Screen
-            name='Agent Flight'
-            component={AgentFlightScreen}
-            options={{ title: 'Select Flight' }}
+            name='Agent Hotel'
+            component={AgentHotelScreen}
+            options={{ title: 'Select Hotel' }}
           />
+
+<Stack.Screen
+            name='Agent Activity'
+            component={AgentActivityScreen}
+            options={{ title: 'Select Activity' }}
+          />
+
+<Stack.Screen
+            name='Agent Confirm Package'
+            component={AgentCofirmPackageScreen}
+            options={{ title: 'Confirmation' }}
+          />
+
 
         </Stack.Navigator>
       </NavigationContainer>

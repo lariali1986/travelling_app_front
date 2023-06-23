@@ -1,18 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import AgentFlightCard from './AgentFlightCard';
-import { useContext } from 'react';
-import { AppContent } from '../store/AppContent';
 
+export default function AgentFlightCardGroup({ data, sendFlightsToFlightScreen }) {
+  const [selectedFligths, setSelectedFlights]=useState([0]);
 
-export default function AgentFlightCardGroup({ data }) {
-  const navigation = useNavigation();
-  const {storedInfo, setFcn}=useContext(AppContent);
-  //const [activeFlight, setActiveFlight]=useContext();
-  
-  console.log('my type is: ', navigation);
-  //const image1 = require('../assets/icon.png');
+  sendFlightsToFlightScreen
+  const sendFlights=()=>{
+    sendFlightsToFlightScreen(selectedFligths);
+  }
+  sendFlights();
+
+  const getSelectedFlights=(element, action)=>{
+    if (action=='add'){
+      setSelectedFlights([...selectedFligths, element]);
+    }
+    else if (action=='rmv'){
+      setSelectedFlights(selectedFligths.filter((item) => item !== element));
+    }
+  }
+
+  let active=selectedFligths;
 
   return (
     <FlatList
@@ -21,8 +29,7 @@ export default function AgentFlightCardGroup({ data }) {
       numColumns={1}
       renderItem={({ item}) => (
         <AgentFlightCard
-          item={item} active={storedInfo.flightID}
-          
+          item={item} active={active} sendSelectedToParent={getSelectedFlights}
         />
       )}
       contentContainerStyle={styles.cardGroup}

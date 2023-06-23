@@ -1,44 +1,40 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  Linking,
-} from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useContext } from 'react';
-import { AppContent } from '../store/AppContent';
-import ActivityCardGroup from '../Components/ActivityCardGroup'
-
+import AgentActivityCardGroup from '../Components/AgentActivityCardGroup';
 
 //const predefinedPackages = require('../data/predefined_packages.json');
 const AgentActivityScreen = ({ route }) => {
   const navigation = useNavigation();
-  const { storedInfo, setFcn } = useContext(AppContent);
-  //const [flightList, setFlightList]=useState();
-  //const [packages, setPackages] = useState();
-  const { responseBody } = route.params;
+  const { responseBody, flights, hotels } = route.params;
 
-  console.log(
-    'I am inside the flightList anhe flights are ' +
-      JSON.stringify(responseBody.flights[0])
-  );
+  let activityList = [];
+  //===to get the selected activity from child componenet
+  const selectedActivities = (activities) => {
+    activityList = activities;
+  };
+  //==================================================
   const pressHandler = () => {
-      navigation.navigate('Confirm Package', { responseBody: responseBody });
+    navigation.navigate('Agent Confirm Package', {
+      responseBody: responseBody,
+      flights: flights,
+      hotels: hotels,
+      activities: activityList,
+    });
   };
 
   const handleToFlightHotel = () => {
-      navigation.navigate('Hotel', { responseBody: responseBody});
-    };
-
+    navigation.navigate('Hotel');
+  };
 
   return (
     <View style={styles.containerHome}>
-      <ActivityCardGroup data={responseBody.activities} />
+      <AgentActivityCardGroup
+        data={responseBody.activities}
+        sendActivitiesToActivityScreen={selectedActivities}
+      />
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={handleToFlightHotel}>
+        <TouchableOpacity style={styles.button} onPress={handleToFlightHotel}>
           <Text style={styles.buttonText}>Back to Flight/Hotel</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={pressHandler}>

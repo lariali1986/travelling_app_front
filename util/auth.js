@@ -147,12 +147,20 @@ export async function deletePackage(packageId) {
 }
 
 export async function agentCreatePackage(flight_ids, hotel_ids, activity_ids, packageName, daysCount) {
-  const response = await fetch(url + 'preDefineCreate', {
+  const response = await fetch(url + 'preDefinePackage', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       flight_ids, hotel_ids, activity_ids, packageName, daysCount
     }),
+  });
+  return response;
+}
+
+export async function getReport() {
+  const response = await fetch(url + 'report', {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
   });
   return response;
 }

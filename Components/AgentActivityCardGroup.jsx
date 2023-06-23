@@ -1,26 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import AgentActivityCard from './AgentActivityCard';
-import { useContext } from 'react';
-import { AppContent } from '../store/AppContent';
 
+export default function AgentActivityCardGroup({ data, sendActivitiesToActivityScreen }) {
+  const [selectedActivities, setSelectedActivities]=useState([0]);
 
-export default function AgentActivityCardGroup({ data }) {
-  const navigation = useNavigation();
-  const { storedInfo, setFcn } = useContext(AppContent);
-  //const [activeFlight, setActiveFlight]=useContext();
+  sendActivitiesToActivityScreen(selectedActivities)
+  
+  const getSelectedActivities=(element, action)=>{
+    if (action=='add'){
+      setSelectedActivities([...selectedActivities, element]);
+    }
+    else if (action=='rmv'){
+      setSelectedActivities(selectedActivities.filter((item) => item !== element));
+    }
+  }
 
-  console.log('my type is: ', navigation);
-  //const image1 = require('../assets/icon.png');
+  let active=selectedActivities;
 
   return (
     <FlatList
       data={data}
       keyExtractor={(item) => item.id}
       numColumns={1}
-      renderItem={({ item }) => (
-        <AgentActivityCard item={item} activeList={storedInfo.activityID} />
+      renderItem={({ item}) => (
+        <AgentActivityCard
+          item={item} active={active} sendSelectedToParent={getSelectedActivities}
+        />
       )}
       contentContainerStyle={styles.cardGroup}
     />
@@ -33,3 +39,4 @@ const styles = {
     paddingVertical: 8,
   },
 };
+

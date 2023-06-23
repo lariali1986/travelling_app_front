@@ -11,49 +11,33 @@ import {
 import { useContext } from 'react';
 import { AppContent } from '../store/AppContent';
 
-//---------Import employed classes--------------
-import Customer from '../Classes/Customer';
 
 const SignUpScreen = () => {
   const { storedInfo, setFcn, systemClasses } = useContext(AppContent);
   const navigation = useNavigation();
   const [confirmPassword, setConfirmPassword] = useState('');
-  const newCustomer = new Customer();
-  const [customer, setCustomer] = useState(newCustomer);
   const [name, setName]=useState();
   const [password, setPassword]=useState();
   const [email, setEmail]=useState();
   const [username, setUsername]=useState();
 
   const handleNameChange = (name) => {
-    newCustomer.setCustomerName(name);
-    setCustomer(newCustomer);
     setName(name);
-    console.log(JSON.stringify(customer));
   };
 
   const handleUsernameChange = (username) => {
-    newCustomer.setCustomerUsername(username);
-    setCustomer(newCustomer);
     setUsername(username);
-    console.log(JSON.stringify(customer));
   };
 
   const handleEmailChange = (email) => {
-    newCustomer.setCustomerEmail(email);
-    setCustomer(newCustomer);
     setEmail(email);
-    console.log(JSON.stringify(customer));
   };
 
   const handlePasswordChange = (password) => {
-    newCustomer.setCustomerPassword(password);
-    setCustomer(newCustomer);
     setPassword(password);
-    console.log(JSON.stringify(customer));
   };
-  async function handleSignUp() {
 
+  async function handleSignUp() {
     const validityStatus = checkCredentials(
       username,
       email,

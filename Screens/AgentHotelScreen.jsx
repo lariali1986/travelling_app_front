@@ -1,49 +1,40 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  Image,
-  TextInput,
-  Linking,
 } from 'react-native';
-import PackageCardGroup from '../Components/PackageCardGroup';
 import { useNavigation } from '@react-navigation/native';
-import { useContext } from 'react';
-import { AppContent } from '../store/AppContent';
-import { getPackages } from '../util/auth';
-import HotelCardGroup from '../Components/HotelCardGroup';
+import AgentHotelCardGroup from '../Components/AgentHotelCardGroup';
 
-const packages = require('../data/predefined_packages.json');
-
-//const predefinedPackages = require('../data/predefined_packages.json');
 const AgentHotelScreen = ({ route }) => {
   const navigation = useNavigation();
-  const { storedInfo, setFcn } = useContext(AppContent);
-  //const [flightList, setFlightList]=useState();
-  //const [packages, setPackages] = useState();
-  const { responseBody } = route.params;
+  const { responseBody, flights } = route.params;
 
-  console.log(
-    'I am inside the flightList anhe flights are ' +
-      JSON.stringify(responseBody.flights[0])
-  );
+  let hotelList=[];
+
+  //===to get the selected flight from child componenet
+  const selectedHotels=(hotel)=>{
+    hotelList=hotel;
+  }
+  //==================================================
+
   const handleToActivityPage = () => {
-    if (storedInfo.hotelID.length < 1) {
+    if (hotelList.length < 2) {
       alert('At least one item should be selected');
     } else {
-      navigation.navigate('Activity', { responseBody: responseBody });
+      navigation.navigate('Agent Activity', { responseBody: responseBody, flights:flights, hotels:hotelList});
     }
   };
 
   const handleToFlightPage = () => {
-      navigation.navigate('Flight', { responseBody: responseBody });
+      navigation.navigate('Agent Flight');
     
   };
 
   return (
     <View style={styles.containerHome}>
-      <HotelCardGroup data={responseBody.hotels} />
+      <AgentHotelCardGroup data={responseBody.hotels} sendHotelsToHotelScreen={selectedHotels}/>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleToFlightPage}>
           <Text style={styles.buttonText}>Back to Select Flight</Text>

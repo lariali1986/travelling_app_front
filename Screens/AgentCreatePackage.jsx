@@ -45,10 +45,11 @@ const AgentCreatePackage = () => {
         returnDate
       );
       if (response.status == 200) {
-        console.log('this is the info receiced........');
+        //console.log('this is the info receiced........');
         let responseBody = await response.json();
         //console.log('.......' + JSON.stringify(jwtResponse));
-        navigation.navigate('Agent Flight', { responseBody: responseBody });
+        navigation.navigate('Agent Flight', {responseBody: responseBody});
+       // navigation.navigate('Agent Panel', {responseBody: responseBody, Btn: 'Flight' });
       }
       if (response.status != 200) {
         alert(response.stauts);

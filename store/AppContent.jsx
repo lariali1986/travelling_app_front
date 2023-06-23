@@ -3,29 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AppContent = createContext({});
 export default function AppContentProvider(props) {
-  class Customer {
-    constructor() {
-      this.name = '';
-      this.username = '';
-      this.email = '';
-      this.password = '';
-    }
-    setCustomerName(name) {
-      this.name = name;
-    }
-    setCustomerUsername(username) {
-      this.username = username;
-    }
-    setCustomerEmail(email) {
-      this.email = email;
-    }
-    setCustomerPassword(password) {
-      this.password = password;
-    }
-  }
 
+  //=========Customer side screen variables==========
   const [customer, setCustomer] = useState();
-
   const [packages, setPackages] = useState();
   const [flightID, setFlightID] = useState([]);
   const [hotelID, setHotelID] = useState([]);
@@ -36,16 +16,22 @@ export default function AppContentProvider(props) {
   const [token, setToken] = useState(null);
   const [agentToken, setAgentToken] = useState(null);
   const [customerUsername, setCustomerUsername] = useState();
+  //==========Agent side screen variables====
   const [agentUsername, setAgentUsername] = useState();
   const [agentBookingList, setAgentBookingList] = useState();
+  const [flightIDAgent, setFlightIDAgent] = useState([]);
+  const [hotelIDAgent, setHotelIDAgent] = useState([]);
+  const [activityIDAgent, setActivityIDAgent] = useState([]);
+  //==============================================
 
   const setTheCustomer = (customer) => {
     setCustomer(customer);
-  };
-
+  };  
   const setTravelPackages = (packages) => {
     setPackages(packages);
   };
+
+//============Customer side screens functions==============
 
   useEffect(() => {
     async function fetchToken() {
@@ -76,25 +62,7 @@ export default function AppContentProvider(props) {
     AsyncStorage.removeItem('token');
     AsyncStorage.removeItem('customerUsername');
   };
-
-  const setAuthAgentToken = (agentToken, agentUsername) => {
-    setAgentToken(agentToken);
-    setAgentUsername(agentUsername);
-    AsyncStorage.setItem('agentToken', agentToken);
-    AsyncStorage.setItem('agentUsername', agentUsername);
-  };
-
-  const agentLogout = () => {
-    setAgentToken(null);
-    setAgentUsername(null);
-    AsyncStorage.removeItem('agentToken');
-    AsyncStorage.removeItem('agentUsername');
-  };
-
-  const updateAgentBookingList = (agentBookingList) => {
-    setAgentBookingList(agentBookingList)
-    };
-
+  
   const addFlightId = (newFlightID) => {
     setFlightID([...flightID, ...newFlightID]);
   };
@@ -123,6 +91,49 @@ export default function AppContentProvider(props) {
   const setReturnDate = (date) => {
     setCheck_out_date(date);
   };
+  
+  //=========Agent side screens functions==========
+  //===============================================
+  const setAuthAgentToken = (agentToken, agentUsername) => {
+    setAgentToken(agentToken);
+    setAgentUsername(agentUsername);
+    AsyncStorage.setItem('agentToken', agentToken);
+    AsyncStorage.setItem('agentUsername', agentUsername);
+  };
+
+  const agentLogout = () => {
+    setAgentToken(null);
+    setAgentUsername(null);
+    AsyncStorage.removeItem('agentToken');
+    AsyncStorage.removeItem('agentUsername');
+  };
+
+  const updateAgentBookingList = (agentBookingList) => {
+    setAgentBookingList(agentBookingList)
+    };
+
+    const addFlightIdAgent = (newFlightID) => {
+      setFlightIDAgent([...flightIDAgent, ...newFlightID]);
+    };
+    const rmvFlightIdAgent = (rmvFlightID) => {
+      setFlightIDAgent(flightIDAgent.filter((item) => item !== rmvFlightID));
+    };
+    const addHotelIdAgent = (newHotelID) => {
+      setHotelIDAgent([...hotelIDAgent, ...newHotelID]);
+    };
+    const rmvHotelIdAgent = (rmvHotelID) => {
+      setHotelIDAgent(hotelIDAgent.filter((item) => item !== rmvHotelID));
+    };
+    const addActivityIdAgent = (newActivityID) => {
+      setActivityIDAgent([...activityIDAgent, ...newActivityID]);
+    };
+    const rmvActivityIdAgent = (rmvActivityID) => {
+      setActivityIDAgent(activityIDAgent.filter((item) => item !== rmvActivityID));
+    };
+
+  
+//=========Agent side screens functions==========
+//===============================================
 
   const storedInfo = {
     customer: customer,
@@ -139,16 +150,19 @@ export default function AppContentProvider(props) {
     agentToken: agentToken,
     isAuthenticated: !!token,
     agentBookingList: agentBookingList,
+
+    //===Agent===
+    flightIDAgent: flightIDAgent,
+    hotelIDAgent: hotelIDAgent,
+    activityIDAgent: activityIDAgent,
   };
 
   const setFcn = {
     setTheCustomer: setTheCustomer,
-
     setTravelPackages: setTravelPackages,
     setAuthToken: setAuthToken,
     setAuthAgentToken: setAuthAgentToken,
     logout: logout,
-    agentLogout: agentLogout,
     addFlightId: addFlightId,
     rmvFlightId: rmvFlightId,
     addHotelId: addHotelId,
@@ -158,16 +172,23 @@ export default function AppContentProvider(props) {
     setNumOfDays: setNumOfDays,
     setDepartureDate: setDepartureDate,
     setReturnDate: setReturnDate,
+    
+
+    /// agent===========
+    agentLogout: agentLogout,
     updateAgentBookingList: updateAgentBookingList,
-  };
-  const systemClasses = {
-    customer: customer,
+    addFlightIdAgent: addFlightIdAgent,
+    rmvFlightIdAgent: rmvFlightIdAgent,
+    addHotelIdAgent: addHotelIdAgent,
+    rmvHotelIdAgent: rmvHotelIdAgent,
+    addActivityIdAgent: addActivityIdAgent,
+    rmvActivityIdAgent: rmvActivityIdAgent,
+
   };
 
   const value = {
     setFcn: setFcn,
     storedInfo: storedInfo,
-    systemClasses: systemClasses,
   };
 
   return (

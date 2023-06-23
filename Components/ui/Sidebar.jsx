@@ -2,12 +2,15 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const SidebarOption = ({ option, selected, onPress }) => (
-  <TouchableOpacity
-    style={selected ? [styles.option, styles.selectedOption] : styles.option}
-    onPress={onPress}
-  >
-    <Text style={styles.optionText}>{option}</Text>
-  </TouchableOpacity>
+  <View>
+    <TouchableOpacity
+      style={selected ? [styles.option, styles.selectedOption] : styles.option}
+      onPress={onPress}
+    >
+      <Text style={styles.optionText}>{option}</Text>
+    </TouchableOpacity>
+    <View style={{ width: '100%', height: 1, backgroundColor: '#9E9E9E' }} />
+  </View>
 );
 
 const Sidebar = ({ options, selectedOption, onOptionPress }) => (
@@ -33,7 +36,7 @@ const styles = StyleSheet.create({
   },
   sidebar: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    //backgroundColor: 'blue',
     paddingVertical: 10,
     paddingHorizontal: 5,
   },
@@ -43,14 +46,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   option: {
-    marginVertical: 50,
+    marginVertical: 10,
   },
-  selectedOption: {
-    backgroundColor: 'pink',
-  },
+  selectedOption: {},
   optionText: {
     fontSize: 12,
     fontWeight: 'bold',
+    color: '#424242',
   },
 });
 

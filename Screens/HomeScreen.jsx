@@ -16,7 +16,6 @@ import { useContext } from 'react';
 import { AppContent } from '../store/AppContent';
 import { getPackages, viewUserBooking } from '../util/auth';
 import LogoutModal from '../Components/ui/LogoutModal';
-import Customer from '../Classes/Customer';
 import SearchBox from '../Components/ui/SearchBox';
 
 const HomeScreen = ({ route }) => {
@@ -40,17 +39,16 @@ const HomeScreen = ({ route }) => {
 
   const handleLogout = () => {
     setVisible(false);
-    systemClasses.customer.logOut();
     setFcn.logout();
   };
-  
-  const handleOnMyAccount =async () => {
+
+  const handleOnMyAccount = async () => {
     setVisible(false);
     try {
       const response = await viewUserBooking(storedInfo.token);
       if (response.status == 200) {
         let jwtResponse = await response.json();
-        navigation.navigate('User Profile')
+        navigation.navigate('User Profile');
       }
       if (response.status != 200) {
         alert(response.stauts);
@@ -58,10 +56,7 @@ const HomeScreen = ({ route }) => {
     } catch (error) {
       alert(error);
     }
-  }
-    
-  
-
+  };
 
   if (!!route.params) {
     const { showHome } = route.params;
@@ -78,8 +73,6 @@ const HomeScreen = ({ route }) => {
       const response = await getPackages();
       if (response.status == 200) {
         let jwtResponse = await response.json();
-        let customer = new Customer('', jwtResponse.userName, '', '');
-        setFcn.setTheCustomer(customer);
         setFcn.setTravelPackages(jwtResponse);
         setPackages(jwtResponse);
       }
@@ -133,121 +126,120 @@ const HomeScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require('../assets/main.png')} // Replace with the path to your image
-        style={styles.backgroundImage}
-        resizeMode='cover'
+      {btn == 'Home' && (
+        <Image
+          source={require('../assets/main2.png')} // Replace with the path to your image
+          style={styles.backgroundImage}
+          resizeMode='cover'
+        />
+      )}
+      <View style={styles.signOutWelcomeContainer}>
+        {storedInfo.isAuthenticated && (
+          <TouchableOpacity
+            style={styles.signOutContainer}
+            ref={buttonRef}
+            onPress={() => {
+              setVisible(true);
+              getButtonPosition();
+            }}
+          >
+            <Image
+              source={require('../assets/human.png')}
+              style={styles.buttonImage}
+            />
+            {/*<Text style={styles.signOutText}>Sign out</Text>*/}
+          </TouchableOpacity>
+        )}
+        {storedInfo.isAuthenticated && (
+          <Text style={styles.welcomeText}>{storedInfo.customerUsername}</Text>
+        )}
+      </View>
+      <View
+        style={
+          btn == 'Home' ? styles.containerHome : styles.containerOtherScreen
+        }
       >
-        <View style={styles.signOutWelcomeContainer}>
-          {storedInfo.isAuthenticated && (
-            <TouchableOpacity
-              style={styles.signOutContainer}
-              ref={buttonRef}
-              onPress={() => {
-                setVisible(true);
-                getButtonPosition();
-              }}
-            >
-              <Image
-                source={require('../assets/human.png')}
-                style={styles.buttonImage}
-              />
-              {/*<Text style={styles.signOutText}>Sign out</Text>*/}
-            </TouchableOpacity>
-          )}
-          {storedInfo.isAuthenticated && (
-            <Text style={styles.welcomeText}>
-              {storedInfo.customerUsername}
-            </Text>
-          )}
-        </View>
         <View
           style={
-            btn == 'Home' ? styles.containerHome : styles.containerOtherScreen
+            storedInfo.isAuthenticated
+              ? styles.header
+              : [styles.header, { marginTop: 50 }]
           }
         >
-          <View
-            style={
-              storedInfo.isAuthenticated
-                ? styles.header
-                : [styles.header, { marginTop: 50 }]
-            }
-          >
-            {/*<Image source={require('../assets/logo.png')} style={styles.logo} />*/}
-            <View style={styles.buttonContainer}>
+          {/*<Image source={require('../assets/logo.png')} style={styles.logo} />*/}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setBtn('Home')}
+            >
+              <Text style={styles.buttonText}>Home</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={
+                storedInfo.isAuthenticated
+                  ? () => navigation.navigate('Custom Package')
+                  : () => alert('Please Login First')
+              }
+            >
+              <Text style={styles.buttonText}>CustomPackage</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setBtn('About Us')}
+            >
+              <Text style={styles.buttonText}>About Us</Text>
+            </TouchableOpacity>
+
+            {!storedInfo.isAuthenticated && (
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => setBtn('Home')}
+                onPress={() => setBtn('Login')}
               >
-                <Text style={styles.buttonText}>Home</Text>
+                <Text style={styles.buttonText}>Login</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={
-                  storedInfo.isAuthenticated
-                    ? () => navigation.navigate('Custom Package')
-                    : () => alert('Please Login First')
-                }
-              >
-                <Text style={styles.buttonText}>CustomPackage</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => setBtn('About Us')}
-              >
-                <Text style={styles.buttonText}>About Us</Text>
-              </TouchableOpacity>
-
-              {!storedInfo.isAuthenticated && (
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => setBtn('Login')}
-                >
-                  <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-              )}
-
-              {storedInfo.isAuthenticated && (
-                <LogoutModal
-                  visible={visible}
-                  modalPosition={modalPosition}
-                  onMyAccount={handleOnMyAccount}
-                  onLogout={handleLogout}
-                />
-              )}
-            </View>
-          </View>
-
-          {btn === 'Home' && (
-            <SearchBox
-              setDestination={setDestination}
-              setMaxPrice={setMaxPrice}
-              handleSearch={handleSearch}
-            ></SearchBox>
-          )}
-
-          <View style={styles.container}>
-            {btn === 'Home' && (
-              <Text
-                style={[
-                  styles.headingText,
-                  { color: 'yellow', textShadowColor: 'black' },
-                ]}
-              >
-                Available Packages
-              </Text>
             )}
-            {btn === 'Home' && (
-              <View style={[styles.line, , { marginBottom: 1 }]} />
+
+            {storedInfo.isAuthenticated && (
+              <LogoutModal
+                visible={visible}
+                modalPosition={modalPosition}
+                onMyAccount={handleOnMyAccount}
+                onLogout={handleLogout}
+              />
             )}
-            {btn === 'Home' && (
-              <PackageCardGroup data={packages} style={styles.item} />
-            )}
-            {btn === 'About Us' && <Text>Implemented Later</Text>}
-            {btn === 'Login' && <LoginScreen />}
           </View>
         </View>
-      </ImageBackground>
+
+        {btn === 'Home' && (
+          <SearchBox
+            setDestination={setDestination}
+            setMaxPrice={setMaxPrice}
+            handleSearch={handleSearch}
+          ></SearchBox>
+        )}
+
+        <View style={styles.bottomPart}>
+          {btn === 'Home' && (
+            <Text
+              style={[
+                styles.headingText,
+                { color: 'black', textShadowColor: '#424242' },
+              ]}
+            >
+              Available Packages
+            </Text>
+          )}
+          {btn === 'Home' && (
+            <View style={[styles.line, , { marginBottom: 1 }]} />
+          )}
+          {btn === 'Home' && (
+            <PackageCardGroup data={packages} style={styles.item} />
+          )}
+          {btn === 'About Us' && <Text>Implemented Later</Text>}
+          {btn === 'Login' && <LoginScreen />}
+        </View>
+      </View>
     </View>
   );
 };
@@ -269,7 +261,7 @@ const styles = {
   },
   containerOtherScreen: {
     flex: 1,
-    backgroundColor: 'grey',
+    backgroundColor: '#F5F5F5',
   },
   searchContainer: {
     alignItems: 'center',
@@ -312,7 +304,7 @@ const styles = {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: 'yellow',
+    backgroundColor: '#F5F5F5',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 6,
@@ -350,7 +342,7 @@ const styles = {
     opacity: 1,
     fontSize: 14,
     fontWeight: 'bold',
-    color: 'yellow',
+    color: '#9E9E9E',
   },
   item: {
     paddingTop: 20,
@@ -383,6 +375,9 @@ const styles = {
     width: 40,
     height: 40,
     borderRadius: 20,
+  },
+  bottomPart: {
+    color: 'F5F5F5',
   },
 };
 

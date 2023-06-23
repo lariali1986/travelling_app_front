@@ -117,7 +117,7 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'grey',
+    backgroundColor: '#F5F5F5',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 1,
@@ -131,13 +131,14 @@ const styles = StyleSheet.create({
   input: {
     width: '60%',
     height: 35,
-    borderColor: 'yellow',
+    borderColor: 'black',
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 10,
     paddingHorizontal: 10,
     fontSize: 12,
-    color:'white',
+    color:'black',
+    backgroundColor: '#F5F5F5',
   },
   loginButton: {
     borderRadius: 5,
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   buttonText: {
-    color: 'white',
+    color: '#424242',
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -156,13 +157,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   signUpText: {
-    color: '#000000',
+    color: '#424242',
     fontSize: 12,
     textDecorationLine: 'underline',
     color: 'blue',
   },
   simpleText: {
-    color: 'white',
+    color: '#424242',
     fontSize: 14,
     marginBottom: 12,
     fontWeight: 'bold',
