@@ -1,21 +1,9 @@
-import React, { useState, useContext } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  Image,
-  Dimensions,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { agentModifyPackage } from '../util/auth';
-import { AppContent } from '../store/AppContent';
 import { TouchableOpacity } from 'react-native-web';
 
 const AgentModifyPackage = () => {
-  const navigation = useNavigation();
-  const { storedInfo, setFcn } = useContext(AppContent);
   const [packageId, setPackageId] = useState('');
   const [packageName, setPackageName] = useState('');
   const [daysCount, setDaysCount] = useState('');
@@ -49,9 +37,16 @@ const AgentModifyPackage = () => {
   //===============Modify Package=================
   const handleModifyPackage = async () => {
     try {
-      let hotelArray=hotelIDs.split(',').map(Number);
-      let activityArray=activityIDs.split(',').map(Number);
-      const response = await agentModifyPackage(parseInt(packageId), packageName, parseInt(daysCount), [parseInt(flightIDs)], hotelArray, activityArray);
+      let hotelArray = hotelIDs.split(',').map(Number);
+      let activityArray = activityIDs.split(',').map(Number);
+      const response = await agentModifyPackage(
+        parseInt(packageId),
+        packageName,
+        parseInt(daysCount),
+        [parseInt(flightIDs)],
+        hotelArray,
+        activityArray
+      );
       if (response.status == 200) {
         console.log('I am here........');
         let jwtResponse = await response.json();
@@ -91,41 +86,42 @@ const AgentModifyPackage = () => {
       />
       <TextInput
         value={flightIDs}
-        placeholder='Flight ID'
+        placeholder='Flight ID, e.g. 1'
         onChangeText={handleFlightId}
         style={styles.input}
       />
       <TextInput
         value={hotelIDs}
-        placeholder='Hotel IDs'
+        placeholder='Hotel IDs e.g. 1,2,3'
         onChangeText={handleHotelId}
         style={styles.input}
       />
       <TextInput
         value={activityIDs}
-        placeholder='Activity IDs'
+        placeholder='Activity IDs e.g 1,2,3'
         onChangeText={handleActivityId}
         style={styles.input}
       />
       <TouchableOpacity onPress={handleModifyPackage} style={styles.button}>
         <Text style={styles.buttonText}>Update</Text>
       </TouchableOpacity>
-      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    paddingHorizontal: 16,
+    alignItems: 'center',
+    marginTop: 3,
+    paddingHorizontal: 8,
   },
   heading: {
-    fontSize: 18,
+    marginTop: 120,
+    fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 14,
   },
   inputContainer: {
-    flex: 1,
     marginRight: 8,
   },
   label: {
@@ -134,24 +130,30 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 30,
+    width: "50%",
     fontSize: 12,
     paddingHorizontal: 2,
     borderColor: 'black',
     color: 'black',
     borderWidth: 1,
     borderRadius: 8,
-    marginBottom:8,
+    marginBottom: 8,
   },
 
   button: {
-    justifyContent: 'center',
-    alignItems: 'center',
     marginTop: 20,
     backgroundColor: 'blue',
+    borderRadius: 6,
+    width: 60,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  buttonText:{
-    color: 'white'
-  }
+  buttonText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
 });
 
 export default AgentModifyPackage;

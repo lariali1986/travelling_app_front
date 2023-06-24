@@ -81,7 +81,7 @@ const AgentCreatePackage = () => {
         </View>
       </View>
 
-      <Text style={styles.heading}>Select Dates:</Text>
+      <Text style={[styles.heading, {marginTop:20}]}>Select Dates:</Text>
       <View style={styles.row}>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Departure Date:</Text>
@@ -115,29 +115,31 @@ const screenWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 16,
   },
   heading: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 8,
+    marginTop:120,
   },
   inputContainer: {
     flex: 1,
     marginRight: 8,
   },
   label: {
-    fontSize: 16,
+    fontSize: 12,
     marginBottom: 8,
   },
   input: {
     height: 30,
-    fontSize: 16,
+    fontSize: 12,
     paddingHorizontal: 2,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 8,
+    width:"90%"
   },
 
   buttonContainer: {

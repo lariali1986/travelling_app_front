@@ -40,17 +40,9 @@ const AgentPanelScreen = () => {
       else if (option == 'View Package') {
         handleViewPackage();
       }
-      else if (option == 'Create Package') {
-        //navigation.navigate('Custom Package');
-      }
-      else if (option == 'Modify Package') {
-        //navigation.navigate('Custom Package');
-
-      }
   }
-    // Handle logic to display related information based on the selected o
+   
   //=========View Booking===========================
-  let BookingList=[];
   const handleViewBooking = async () => {
     try {
       const response = await viewBooking();
@@ -61,9 +53,6 @@ const AgentPanelScreen = () => {
           JSON.stringify(jwtResponse.bookings),
           'I am here................'
         );
-
-        //setFcn.updateAgentBookingList(JSON.stringify(jwtResponse));
-        //console.log(jwtResponse.bookings);
       }
       if (response.status != 200) {
         alert(response.stauts);
@@ -79,7 +68,6 @@ const AgentPanelScreen = () => {
       if (response.status == 200) {
         let jwtResponse = await response.json();
         setPackageList(jwtResponse);
-        console.log(JSON.stringify(jwtResponse), 'I am here................');
       }
 
       if (response.status != 200) {
@@ -95,9 +83,7 @@ const AgentPanelScreen = () => {
     try {
       const response = await getReport();
       if (response.status == 200) {
-        console.log('I am here........');
         let jwtResponse = await response.json();
-        console.log(JSON.stringify(jwtResponse));
         setReport(jwtResponse);
       }
       if (response.status != 200) {
@@ -108,7 +94,7 @@ const AgentPanelScreen = () => {
     }
   };
   
-
+//==============Log out for agent==========
   const handleLogout = () => {
     setModalVisible(false);
     setFcn.agentLogout();
@@ -135,10 +121,8 @@ const AgentPanelScreen = () => {
         <View style={{ width: '33%' }}>
           <TouchableOpacity
             style={styles.signOutContainer}
-            //ref={buttonRef}
             onPress={() => {
               setModalVisible(true);
-              //getButtonPosition();
             }}
           >
             <Text style={styles.signOutText}>Sign out</Text>
@@ -207,8 +191,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
+    alignContent: 'center',
   },
   sideBar: {
     flex: 1,

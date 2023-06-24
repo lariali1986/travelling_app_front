@@ -22,8 +22,6 @@ const AgentCofirmPackageScreen = ({ route }) => {
   };
 
   const handleBackToAgentPanel = () => {
-    // Handle navigation or any other action to go back to the agent panel
-    // For demonstration purposes, simply clearing the package details
     navigation.navigate('Agent Panel');
   };
 
@@ -46,7 +44,7 @@ const AgentCofirmPackageScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <TextInput
-        style={styles.input}
+        style={[styles.input, {marginTop:100}]}
         value={packageName}
         onChangeText={setPackageName}
         placeholder='Package Name'
@@ -64,17 +62,17 @@ const AgentCofirmPackageScreen = ({ route }) => {
       />
       {showDetail && (
         <View>
-          <Text>Package Name: {packageName}</Text>
+          <Text>Package Name: {packageName} </Text>
           <Text>{daysCount} days</Text>
           <Text>Flight ID: {flight}</Text>
-          <Text>Hotel IDs: {hotelList}</Text>
-          <Text>Activity IDs: {activityList}</Text>
+          <Text>Hotel IDs: {hotelList.join(',')}</Text>
+          <Text>Activity IDs: {activityList.join(',')}</Text>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={handleBackToAgentPanel}>
-              <Text>Cancel</Text>
+            <TouchableOpacity onPress={handleBackToAgentPanel} style={styles.button}>
+              <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleConfirm}>
-              <Text>Confirm</Text>
+            <TouchableOpacity onPress={handleConfirm} style={styles.button}>
+              <Text style={styles.buttonText}>Confirm</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -86,7 +84,6 @@ const AgentCofirmPackageScreen = ({ route }) => {
 const styles = {
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
@@ -103,6 +100,22 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  button: {
+    marginTop: 20,
+    marginLeft:5,
+    backgroundColor: 'blue',
+    borderRadius: 6,
+    width: 60,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
 };
+
 
 export default AgentCofirmPackageScreen;
