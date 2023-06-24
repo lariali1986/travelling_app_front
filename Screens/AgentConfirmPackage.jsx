@@ -8,14 +8,14 @@ const AgentCofirmPackageScreen = ({ route }) => {
   const [packageName, setPackageName] = useState('');
   const [daysCount, setDaysCount] = useState('');
   const [showDetail, setShowDetail] = useState(false);
-const navigation=useNavigation();
+  const navigation = useNavigation();
   const { responseBody, flights, hotels, activities } = route.params;
   //==remove the element 0==
   const flight = flights.filter((element) => element !== 0);
   const hotelList = hotels.filter((element) => element !== 0);
   const activityList = activities.filter((element) => element !== 0);
 
-  console.log('this is activityList'+activityList);
+  console.log('this is activityList' + activityList);
 
   const handleCheckPackageDetails = () => {
     setShowDetail(true);
@@ -37,10 +37,10 @@ const navigation=useNavigation();
     );
     if (response.status == 200) {
       alert('the package was succesfully created');
-    }else{
-        alert('try again, something went wrong')
+    } else {
+      alert('try again, something went wrong');
     }
-    navigation.navigate('Agent Panel')
+    navigation.navigate('Agent Panel');
   };
 
   return (

@@ -8,8 +8,9 @@ import { viewBooking } from '../util/auth';
 import ViewBookingCardGroup from '../Components/ViewBookingCardGroup';
 import ViewPackageCardGroup from '../Components/ViewPackageCardGroup';
 import AgentCreatePackage from './AgentCreatePackage';
-import { getPackages, getReport } from '../util/auth';
+import { getPackages, getReport} from '../util/auth';
 import ViewReport from '../Components/Report';
+import AgentModifyPackage from '../Components/AgentModifyPackage';
 
 const AgentPanelScreen = () => {
   console.log('Hi')
@@ -32,21 +33,20 @@ const AgentPanelScreen = () => {
     setSelectedOption(option);
     if (selectedOption == 'Report') {
       handleReport();
-    } else {
-      if (option == 'View Booking') {
+    }
+     else if (option == 'View Booking') {
         handleViewBooking();
       }
-      if (option == 'View Package') {
+      else if (option == 'View Package') {
         handleViewPackage();
       }
-      if (option == 'Create Package') {
+      else if (option == 'Create Package') {
         //navigation.navigate('Custom Package');
       }
-    }
-    if (selectedOption=='Create Package'){
-    // navigation.navigate('Create Package');
+      else if (option == 'Modify Package') {
+        //navigation.navigate('Custom Package');
 
-    }
+      }
   }
     // Handle logic to display related information based on the selected o
   //=========View Booking===========================
@@ -72,7 +72,7 @@ const AgentPanelScreen = () => {
       alert(error);
     }
   };
-  //=========View Booking===========================
+  //=========View Package===========================
   const handleViewPackage = async () => {
     try {
       const response = await getPackages();
@@ -80,9 +80,6 @@ const AgentPanelScreen = () => {
         let jwtResponse = await response.json();
         setPackageList(jwtResponse);
         console.log(JSON.stringify(jwtResponse), 'I am here................');
-
-        //setFcn.updateAgentBookingList(JSON.stringify(jwtResponse));
-        //console.log(jwtResponse.bookings);
       }
 
       if (response.status != 200) {
@@ -110,25 +107,7 @@ const AgentPanelScreen = () => {
       alert(error);
     }
   };
-  //========================================
-  //create package
-  //const handleCreatePackage =async () => {
-  //  try {
-  //    const response = await getInfoForCreateAgent();
-  //    if (response.status == 200) {
-  //      console.log('I am here........')
-  //      let jwtResponse = await response.json();
-  //      console.log(JSON.stringify(jwtResponse));
-  //    }
-  //    if (response.status != 200) {
-  //      alert(response.stauts);
-  //    }
-  //  } catch (error) {
-  //    alert(error);
-  //  }
-  //}
-
-  //============================================
+  
 
   const handleLogout = () => {
     setModalVisible(false);
@@ -191,6 +170,9 @@ const AgentPanelScreen = () => {
           {selectedOption == 'Create Package' && <AgentCreatePackage />}
           {selectedOption == 'View Package' && (
             <ViewPackageCardGroup data={packageList} />
+          )}
+          {selectedOption == 'Modify Package' && (
+            <AgentModifyPackage data={packageList} />
           )}
         </View>
       </View>

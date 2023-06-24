@@ -44,8 +44,9 @@ const CustomPackage = () => {
       returnDate
     );
     const responseBody = await response.json();
+    console.log('...........'+JSON.stringify(responseBody));
     const flightList = responseBody.flights;
-    console.log('this is flight List     ' + JSON.stringify(flightList[0]));
+    console.log('this is flight List     ' + JSON.stringify(flightList));
     //setFcn.setCustomFlightList(flightList);
     //console.log(JSON.stringify(responseBody));
     console.log('this is flight list ' + storedInfo.flightList);

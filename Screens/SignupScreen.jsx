@@ -13,7 +13,7 @@ import { AppContent } from '../store/AppContent';
 
 
 const SignUpScreen = () => {
-  const { storedInfo, setFcn, systemClasses } = useContext(AppContent);
+  const { storedInfo, setFcn} = useContext(AppContent);
   const navigation = useNavigation();
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName]=useState();
@@ -54,7 +54,7 @@ const SignUpScreen = () => {
         );
         if (response.status == 200) {
           let jwtResponse = await response.json();
-          setFcn.setTheCustomer(customer);
+          console.log('signup error..'+JSON.stringify(jwtResponse))
           setFcn.setAuthToken(jwtResponse.api_token, jwtResponse.userName);
           setFcn.setTravelPackages(jwtResponse.packages);
           navigation.navigate('Home', { showHome: true });

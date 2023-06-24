@@ -157,6 +157,18 @@ export async function agentCreatePackage(flight_ids, hotel_ids, activity_ids, pa
   return response;
 }
 
+export async function agentModifyPackage(package_id, packageName, daysCount, flight_ids, hotel_ids, activity_ids) {
+  const response = await fetch(url + 'preDefinePackage', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      package_id, packageName, daysCount, flight_ids, hotel_ids, activity_ids
+    }),
+  });
+  return response;
+}
+
+
 export async function getReport() {
   const response = await fetch(url + 'report', {
     method: 'GET',

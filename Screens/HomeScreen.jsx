@@ -73,6 +73,7 @@ const HomeScreen = ({ route }) => {
       const response = await getPackages();
       if (response.status == 200) {
         let jwtResponse = await response.json();
+        console.log('............'+JSON.stringify(jwtResponse));
         setFcn.setTravelPackages(jwtResponse);
         setPackages(jwtResponse);
       }
